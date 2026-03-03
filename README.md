@@ -1,6 +1,6 @@
-# Spring AI Application
+# contract-ai
 
-这是一个基于Spring AI Alibaba框架构建的应用程序，用于演示AI功能集成。
+这是一个基于Spring AI Alibaba框架构建的应用程序，用于合同生成与检测。
 
 ## 项目特性
 
@@ -10,6 +10,7 @@
 - 提供图式AI工作流支持
 - 配置了预定义的AI Agent和工具
 - 集成MCP（Model Context Protocol）客户端
+- 专门用于合同生成和处理
 
 ## 环境要求
 
@@ -125,74 +126,4 @@ src/
 ├── skills/                  # 外部技能目录
 │   └── purchase-contract-generator/ # 采购合同生成技能
 └── generated_contracts/     # 生成的合同文件目录（运行时创建）
-```
-
-2. 构建项目：
-```bash
-./mvnw clean install
-```
-
-3. 运行应用程序：
-```bash
-./mvnw spring-boot:run
-```
-
-## API端点
-
-- `GET http://localhost:7341/hello` - 基础测试端点
-- `GET http://localhost:7341/ai/simple-chat?message=your_message` - 简单AI聊天
-- `GET http://localhost:7341/ai/prompt-chat?message=your_message` - 带提示词的AI聊天
-- `GET http://localhost:7341/test/chat?message=your_message` - 测试AI对话接口
-- `GET http://localhost:7341/test/chat/react?message=your_message` - React Agent测试
-- `GET http://localhost:7341/test/chat/react/tools?message=your_message` - 工具调用Agent测试
-
-## MCP（Model Context Protocol）配置
-
-项目包含MCP服务器配置，用于处理Excel文件：
-- 配置文件：`.ai-context.json`
-- Excel MCP服务器：`@negokaz/excel-mcp-server`
-- 单页单元格限制：4000个单元格
-
-### MCP服务器启动
-
-如果使用支持MCP的编辑器或IDE，Excel MCP服务器将在需要时自动启动。
-
-## 配置说明
-
-- 应用端口：默认为 7341
-- API密钥：通过环境变量 BAI_LIAN_API_KEY 配置
-- 模型配置：在 application.yml 中设置
-- 模型相关配置位于 `src/main/java/com/example/springaiapp/config/` 目录
-- 工具配置位于 `src/main/java/com/example/springaiapp/tools/` 目录
-
-## 模型配置
-
-项目包含以下模型配置组件：
-- `LLMConfig.java`: LLM模型配置，包括React Agent、ChatClient等
-- `ApplicationConfig.java`: 应用程序配置，管理API密钥等
-- `ToolsConfig.java`: 工具配置，注册可调用的工具
-- `ToolErrorInterceptor.java`: 工具调用错误处理
-
-## 工具配置
-
-项目包含以下内置工具：
-- `WeatherTool.java`: 天气查询工具
-- `TimeTool.java`: 时间查询工具
-- `UserLocationTool.java`: 用户位置获取工具
-
-## 目录结构
-
-```
-src/
-├── main/
-│   ├── java/com/example/springaiapp/
-│   │   ├── SpringaiappApplication.java
-│   │   ├── config/          # 模型和应用配置
-│   │   ├── controller/      # 控制器
-│   │   ├── service/         # 服务层
-│   │   ├── tools/           # 工具类
-│   │   └── example/         # 示例代码
-│   └── resources/
-│       ├── application.properties
-│       └── application.yml
 ```

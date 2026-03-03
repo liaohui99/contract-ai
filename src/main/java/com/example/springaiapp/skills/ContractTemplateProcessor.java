@@ -166,7 +166,6 @@ public class ContractTemplateProcessor {
 
     /**
      * 清除指定区域的单元格内容，保留样式
-     * 注意：此方法会保护第7行（索引为6）的表头不会被清除
      *
      * @param sheet 工作表
      * @param startCellRef 起始单元格引用（如"A8"）
@@ -190,12 +189,6 @@ public class ContractTemplateProcessor {
                  startCellRef, startRow, startCol, endCellRef, endRow, endCol);
 
         for (int rowNum = startRow; rowNum <= endRow; rowNum++) {
-            // 保护第7行（索引为6）的表头，不被清除
-            if (rowNum == 6) {
-                log.info("跳过第7行（索引6），保护表头不被清除");
-                continue;
-            }
-            
             Row row = sheet.getRow(rowNum);
             if (row == null) {
                 continue;

@@ -46,18 +46,40 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
         log.info("开始写入Excel文件: {}", request.filePath);
 
         try {
+            // 验证必需参数
+            if (request == null) {
+                throw new IllegalArgumentException("请求参数不能为空");
+            }
+            if (request.filePath == null || request.filePath.trim().isEmpty()) {
+                throw new IllegalArgumentException("文件路径不能为空");
+            }
+
             String filePath = request.filePath;
             String sheetName = request.sheetName != null ? request.sheetName : "Sheet1";
             List<String> headers = request.headers;
             List<List<Object>> data = request.data;
-            boolean appendMode = request.appendMode != null ? request.appendMode : false;
+            Boolean appendMode = request.appendMode;
             String templatePath = request.templatePath;
             Map<String, Object> cellMapping = request.cellMapping;
 
+            // 确保appendMode有默认值
+            if (appendMode == null) {
+                appendMode = false;
+            }
+
+            boolean autoProtected = false;
+            java.io.File targetFile = new java.io.File(filePath);
+            
             if (templatePath != null && !templatePath.isEmpty() && cellMapping != null && !cellMapping.isEmpty()) {
                 ContractTemplateProcessor.generateContract(templatePath, filePath, cellMapping, 
                         request.clearStartCell, request.clearEndCell);
             } else {
+                if (!appendMode && (templatePath == null || templatePath.isEmpty()) 
+                        && targetFile.exists() && targetFile.length() > 0) {
+                    templatePath = filePath;
+                    autoProtected = true;
+                    log.info("检测到文件已存在且非追加模式，自动使用原文件作为模板以保护原有内容");
+                }
                 writeExcel(filePath, sheetName, headers, data, appendMode, templatePath);
             }
 
@@ -74,9 +96,14 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
                 response.put("templatePath", templatePath);
                 response.put("preserveStyle", true);
             }
-            response.put("message", "Excel文件写入成功");
+            if (autoProtected) {
+                response.put("autoProtected", true);
+                response.put("message", "Excel文件写入成功（已自动保护原有内容）");
+            } else {
+                response.put("message", "Excel文件写入成功");
+            }
 
-            log.info("Excel文件写入成功，使用单元格映射: {}", cellMapping != null);
+            log.info("Excel文件写入成功，使用单元格映射: {}, 自动保护: {}", cellMapping != null, autoProtected);
             return toJson(response);
 
         } catch (Exception e) {
@@ -84,6 +111,7 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("error", e.getMessage());
+            errorResponse.put("message", "写入Excel文件失败: " + e.getMessage());
             return toJson(errorResponse);
         }
     }
@@ -163,13 +191,17 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
 
     /**
      * 使用模板写入Excel文件，保留所有样式
+     * 支持模板路径和输出路径相同的情况（原地编辑）
      */
     private void writeExcelWithTemplate(String templatePath, String outputPath,
                                         String sheetName, List<String> headers,
                                         List<List<Object>> data, boolean appendMode) throws IOException {
-        try (FileInputStream fis = new FileInputStream(templatePath);
-             Workbook workbook = new XSSFWorkbook(fis)) {
+        Workbook workbook;
+        try (FileInputStream fis = new FileInputStream(templatePath)) {
+            workbook = new XSSFWorkbook(fis);
+        }
 
+        try {
             Sheet sheet;
             if (sheetName != null && !sheetName.isEmpty()) {
                 sheet = workbook.getSheet(sheetName);
@@ -213,6 +245,8 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
             try (FileOutputStream fos = new FileOutputStream(outputPath)) {
                 workbook.write(fos);
             }
+        } finally {
+            workbook.close();
         }
     }
 
@@ -371,11 +405,16 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
      */
     public static ToolCallback createToolCallback() {
         return FunctionToolCallback.builder("excel_write", new ExcelWriteTool())
-                .description("写入数据到Excel文件。参数包括: filePath文件路径(必填), sheetName工作表名称(可选,默认Sheet1), " +
-                        "headers表头列表(可选), data数据列表(必填,二维数组), appendMode是否追加模式(可选,默认false覆盖写入), " +
+                .description("写入数据到Excel文件。" +
+                        "【重要】编辑已存在的Excel文件时，会自动保护原有内容。" +
+                        "参数包括: filePath文件路径(必填), sheetName工作表名称(可选,默认Sheet1), " +
+                        "headers表头列表(可选), data数据列表(可选,二维数组), " +
+                        "appendMode是否追加模式(可选,默认false), " +
                         "templatePath模板文件路径(可选,提供时会保留模板所有样式), " +
                         "cellMapping单元格映射(可选,Map格式,key为单元格位置如\"A1\",value为值)。" +
-                        "提供templatePath和cellMapping时直接使用ContractTemplateProcessor完美保留所有样式。")
+                        "【推荐】编辑合同等模板文件时，使用templatePath+cellMapping组合可完美保留所有样式。" +
+                        "【安全】当目标文件已存在且未提供templatePath或appendMode时，系统会自动保护原有内容。" +
+                        "【注意】对于包含大量文本内容的操作，请考虑分批处理以避免JSON解析错误。")
                 .inputType(WriteRequest.class)
                 .build();
     }
@@ -393,23 +432,23 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
         public String sheetName;
 
         @JsonProperty
-        @JsonPropertyDescription("表头列表，如[\"姓名\", \"年龄\", \"城市\"]")
+        @JsonPropertyDescription("表头列表，如[\"姓名\", \"年龄\", \"城市\"]。仅用于新建文件或覆盖模式")
         public List<String> headers;
 
         @JsonProperty
-        @JsonPropertyDescription("数据列表，二维数组格式，如[[\"张三\", 25, \"北京\"], [\"李四\", 30, \"上海\"]]")
+        @JsonPropertyDescription("数据列表，二维数组格式，如[[\"张三\", 25, \"北京\"], [\"李四\", 30, \"上海\"]]。编辑已有文件时建议使用cellMapping")
         public List<List<Object>> data;
 
         @JsonProperty
-        @JsonPropertyDescription("是否追加模式，true为追加数据，false为覆盖写入，默认false")
+        @JsonPropertyDescription("是否追加模式，true为追加数据到文件末尾，false为覆盖写入（编辑已有文件时会自动保护原有内容），默认false")
         public Boolean appendMode;
 
         @JsonProperty
-        @JsonPropertyDescription("模板文件路径，提供时会保留模板的所有样式（包括列宽、合并单元格、格式等）")
+        @JsonPropertyDescription("模板文件路径，提供时会保留模板的所有样式（包括列宽、合并单元格、格式等）。编辑已有文件时可设置为原文件路径")
         public String templatePath;
 
         @JsonProperty
-        @JsonPropertyDescription("单元格映射，Map格式，key为单元格位置如\"A1\"，value为值。提供此参数与templatePath时直接填充数据，完美保留所有样式")
+        @JsonPropertyDescription("单元格映射，Map格式，key为单元格位置如\"A1\"，value为值。推荐用于编辑已有文件，可精确控制写入位置并保留所有样式。注意：对于长文本内容，请分批处理以避免JSON解析错误")
         public Map<String, Object> cellMapping;
 
         @JsonProperty

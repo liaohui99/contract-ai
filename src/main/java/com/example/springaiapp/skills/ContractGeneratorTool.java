@@ -12,6 +12,8 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -23,12 +25,11 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 /**
- * Excel合同生成工具
- * 完全根据template-parser skill定义的格式和样式从零创建采购合同Excel文件
- * 不依赖任何模版文件
+ * Excel合同生成与编辑工具
+ * 支持从零创建采购合同Excel文件，也支持编辑已存在的合同文件
  *
  * @author Gabriel
- * @version 2.0
+ * @version 3.0
  */
 @Slf4j
 @Component
@@ -48,7 +49,9 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
     private CellStyle centerStyle;
 
     /**
-     * 生成采购合同Excel文件
+     * 生成或编辑采购合同Excel文件
+     * 如果目标文件已存在且editMode为true，则编辑该文件
+     * 如果目标文件不存在或editMode为false，则创建新文件
      *
      * @param request 合同请求参数
      * @param context 工具上下文
@@ -56,24 +59,41 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
      */
     @Override
     public String apply(ContractRequest request, ToolContext context) {
-        log.info("开始生成采购合同: {}", request.getOutputPath());
+        log.info("开始处理采购合同: {}", request.getOutputPath());
 
         try {
             validateRequest(request);
 
             createOutputDirectory(request.getOutputPath());
 
-            workbook = new XSSFWorkbook();
-            initializeStyles();
+            File outputFile = new File(request.getOutputPath());
+            boolean isEditMode = request.getEditMode() != null ? request.getEditMode() : false;
+            boolean fileExists = outputFile.exists() && outputFile.length() > 0;
 
-            sheet = workbook.createSheet("采购合同");
-            setupColumnWidths();
+            if (isEditMode && fileExists) {
+                log.info("编辑模式：读取已存在的合同文件: {}", request.getOutputPath());
+                try (FileInputStream fis = new FileInputStream(outputFile)) {
+                    workbook = new XSSFWorkbook(fis);
+                }
+                sheet = workbook.getSheetAt(0);
+                initializeStylesFromExistingWorkbook();
+                updateExistingContract(request);
+            } else {
+                if (fileExists) {
+                    log.info("文件已存在但非编辑模式，将覆盖创建新文件");
+                }
+                workbook = new XSSFWorkbook();
+                initializeStyles();
 
-            createHeaderSection(request);
-            createBasicInfoSection(request);
-            createProductTableSection(request);
-            createClauseSection(request);
-            createSignatureSection(request);
+                sheet = workbook.createSheet("采购合同");
+                setupColumnWidths();
+
+                createHeaderSection(request);
+                createBasicInfoSection(request);
+                createProductTableSection(request);
+                createClauseSection(request);
+                createSignatureSection(request);
+            }
 
             saveWorkbook(request.getOutputPath());
 
@@ -83,13 +103,18 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
             response.put("contractNumber", request.getContractNumber());
             response.put("productCount", request.getProducts().size());
             response.put("totalAmount", calculateTotalAmount(request.getProducts()));
-            response.put("message", "采购合同生成成功");
+            response.put("editMode", isEditMode && fileExists);
+            if (isEditMode && fileExists) {
+                response.put("message", "采购合同编辑成功");
+            } else {
+                response.put("message", "采购合同生成成功");
+            }
 
-            log.info("采购合同生成成功: {}", request.getOutputPath());
+            log.info("采购合同处理成功: {}, 编辑模式: {}", request.getOutputPath(), isEditMode && fileExists);
             return toJson(response);
 
         } catch (Exception e) {
-            log.error("生成采购合同失败: {}", e.getMessage(), e);
+            log.error("处理采购合同失败: {}", e.getMessage(), e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("error", e.getMessage());
@@ -103,6 +128,209 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
                 }
             }
         }
+    }
+
+    /**
+     * 从已存在的工作簿初始化样式
+     */
+    private void initializeStylesFromExistingWorkbook() {
+        titleStyle = workbook.createCellStyle();
+        headerStyle = workbook.createCellStyle();
+        dataStyle = workbook.createCellStyle();
+        clauseStyle = workbook.createCellStyle();
+        centerStyle = workbook.createCellStyle();
+
+        Font titleFont = workbook.createFont();
+        titleFont.setFontName("宋体");
+        titleFont.setFontHeightInPoints((short) 16);
+        titleFont.setBold(true);
+        titleStyle.setFont(titleFont);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        Font headerFont = workbook.createFont();
+        headerFont.setFontName("宋体");
+        headerFont.setFontHeightInPoints((short) 11);
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        Font dataFont = workbook.createFont();
+        dataFont.setFontName("宋体");
+        dataFont.setFontHeightInPoints((short) 10);
+        dataStyle.setFont(dataFont);
+        dataStyle.setAlignment(HorizontalAlignment.CENTER);
+        dataStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        dataStyle.setBorderTop(BorderStyle.THIN);
+        dataStyle.setBorderBottom(BorderStyle.THIN);
+        dataStyle.setBorderLeft(BorderStyle.THIN);
+        dataStyle.setBorderRight(BorderStyle.THIN);
+
+        Font clauseFont = workbook.createFont();
+        clauseFont.setFontName("宋体");
+        clauseFont.setFontHeightInPoints((short) 10);
+        clauseStyle.setFont(clauseFont);
+        clauseStyle.setAlignment(HorizontalAlignment.LEFT);
+        clauseStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        clauseStyle.setWrapText(true);
+
+        centerStyle.setFont(dataFont);
+        centerStyle.setAlignment(HorizontalAlignment.CENTER);
+        centerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+    }
+
+    /**
+     * 更新已存在的合同
+     */
+    private void updateExistingContract(ContractRequest request) {
+        updateBasicInfo(request);
+        updateProducts(request);
+        updateClauses(request);
+    }
+
+    /**
+     * 更新基本信息
+     */
+    private void updateBasicInfo(ContractRequest request) {
+        Row row2 = sheet.getRow(2);
+        if (row2 != null) {
+            Cell partyACell = row2.getCell(1);
+            if (partyACell != null && request.getPartyA() != null) {
+                partyACell.setCellValue(request.getPartyA().getName());
+            }
+            Cell contractNumCell = row2.getCell(6);
+            if (contractNumCell != null) {
+                contractNumCell.setCellValue(request.getContractNumber());
+            }
+        }
+
+        Row row3 = sheet.getRow(3);
+        if (row3 != null) {
+            Cell signLocationCell = row3.getCell(6);
+            if (signLocationCell != null) {
+                String signLocation = request.getSignLocation() != null ? request.getSignLocation() : "湖南醴陵";
+                signLocationCell.setCellValue(signLocation);
+            }
+        }
+
+        Row row4 = sheet.getRow(4);
+        if (row4 != null) {
+            Cell partyBCell = row4.getCell(1);
+            if (partyBCell != null && request.getPartyB() != null) {
+                partyBCell.setCellValue(request.getPartyB().getName());
+            }
+            Cell signDateCell = row4.getCell(6);
+            if (signDateCell != null && request.getSignDate() != null) {
+                signDateCell.setCellValue(DATE_FORMAT.format(request.getSignDate()));
+            }
+        }
+    }
+
+    /**
+     * 更新商品明细
+     */
+    private void updateProducts(ContractRequest request) {
+        List<Product> products = request.getProducts();
+        if (products == null || products.isEmpty()) {
+            return;
+        }
+
+        int startRow = 7;
+        for (int i = 0; i < products.size(); i++) {
+            Row row = sheet.getRow(startRow + i);
+            if (row == null) {
+                row = sheet.createRow(startRow + i);
+            }
+            Product product = products.get(i);
+            updateOrCreateCell(row, 0, product.getContractNumber(), dataStyle);
+            updateOrCreateCell(row, 1, product.getName(), dataStyle);
+            updateOrCreateCell(row, 2, product.getSpecification(), dataStyle);
+            updateOrCreateCell(row, 3, product.getQuantity(), dataStyle);
+            updateOrCreateCell(row, 4, product.getUnit(), dataStyle);
+            updateOrCreateCell(row, 5, product.getUnitPrice() != null ? product.getUnitPrice().doubleValue() : null, dataStyle);
+            updateOrCreateCell(row, 6, product.getAmount().doubleValue(), dataStyle);
+            updateOrCreateCell(row, 7, product.getRemark(), dataStyle);
+        }
+
+        int totalRow = startRow + products.size();
+        Row sumRow = sheet.getRow(totalRow);
+        if (sumRow == null) {
+            sumRow = sheet.createRow(totalRow);
+        }
+        updateOrCreateCell(sumRow, 0, "合计", dataStyle);
+        int totalQuantity = products.stream().mapToInt(p -> p.getQuantity() != null ? p.getQuantity() : 0).sum();
+        updateOrCreateCell(sumRow, 3, totalQuantity, dataStyle);
+        BigDecimal totalAmount = calculateTotalAmount(products);
+        updateOrCreateCell(sumRow, 6, totalAmount.doubleValue(), dataStyle);
+
+        Row amountRow = sheet.getRow(totalRow + 1);
+        if (amountRow == null) {
+            amountRow = sheet.createRow(totalRow + 1);
+        }
+        updateOrCreateCell(amountRow, 1, convertToChineseAmount(totalAmount), centerStyle);
+    }
+
+    /**
+     * 更新条款内容
+     */
+    private void updateClauses(ContractRequest request) {
+        int clauseStartRow = 7 + request.getProducts().size() + 2;
+
+        String deliveryDateStr = "";
+        if (request.getDeliveryDate() != null) {
+            deliveryDateStr = DATE_FORMAT_CN.format(request.getDeliveryDate());
+            if (request.getDeliveryDays() != null && request.getDeliveryDays() > 0) {
+                deliveryDateStr += "（另加货运" + request.getDeliveryDays() + "天）";
+            }
+        }
+
+        String[] clauses = {
+            "二、交货时间： " + deliveryDateStr,
+            "三、交货地点 ： " + (request.getDeliveryAddress() != null ? request.getDeliveryAddress() : "") + 
+                (request.getDeliveryContact() != null ? "  " + request.getDeliveryContact() : ""),
+            "四、技术标准、质量要求：",
+            "五、运费方式及费用承担：乙方负责",
+            "六、结算及支付方式：先付款后发货（乙方提供1%增值税普票）",
+            "七、违约责任：乙方必须按合同要求时间交货，如未按期交货，予以赔偿延期所致甲方的损失",
+            "八、本合同未尽事宜由双方协商解决，必要时以合同附件形式另行签订。",
+            "九、在本合同履行过程中，如果发生争议由双方协商解决，协商不成，则双方均可向甲方所在地人民法院提起诉讼。",
+            "十、本合同一式贰份，双方各执一份。双方签字盖章后，合同生效。"
+        };
+
+        for (int i = 0; i < clauses.length; i++) {
+            Row row = sheet.getRow(clauseStartRow + i);
+            if (row == null) {
+                row = sheet.createRow(clauseStartRow + i);
+            }
+            updateOrCreateCell(row, 0, clauses[i], clauseStyle);
+        }
+    }
+
+    /**
+     * 更新或创建单元格
+     */
+    private void updateOrCreateCell(Row row, int columnIndex, Object value, CellStyle style) {
+        Cell cell = row.getCell(columnIndex);
+        if (cell == null) {
+            cell = row.createCell(columnIndex);
+        }
+        if (value == null) {
+            cell.setCellValue("");
+        } else if (value instanceof String) {
+            cell.setCellValue((String) value);
+        } else if (value instanceof Number) {
+            cell.setCellValue(((Number) value).doubleValue());
+        } else {
+            cell.setCellValue(value.toString());
+        }
+        cell.setCellStyle(style);
     }
 
     /**
@@ -322,80 +550,80 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         Row row0 = sheet.createRow(signStartRow);
         row0.setHeightInPoints(19);
         Cell buyerCell = createCell(row0, 0, "购货方", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 0, 1));
-        Cell notaryCell = createCell(row0, 2, "签（公）证意见：", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 2, 4));
-        Cell sellerCell = createCell(row0, 5, "供货方", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 5, 7));
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 0, 2));
+        Cell sellerCell = createCell(row0, 3, "供货方", centerStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 3, 5));
+        Cell notaryCell = createCell(row0, 6, "签（公）证意见：", centerStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 6, 7));
 
         Row row1 = sheet.createRow(signStartRow + 1);
         row1.setHeightInPoints(19);
-        createCell(row1, 0, "单位名称（盖章）：" + request.getPartyA().getName(), centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 0, 1));
-        createCell(row1, 2, "经办人：", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 2, 4));
-        createCell(row1, 5, "单位名称（盖章）：" + request.getPartyB().getName(), centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 5, 7));
+        createCell(row1, 0, "单位名称（盖章）：" + request.getPartyA().getName(), clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 0, 2));
+        createCell(row1, 3, "单位名称（盖章）：" + request.getPartyB().getName(), clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 3, 5));
+        createCell(row1, 6, "经办人：", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 6, 7));
 
         Row row2 = sheet.createRow(signStartRow + 2);
         row2.setHeightInPoints(19);
-        createCell(row2, 0, "法定代表人：", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 0, 1));
+        createCell(row2, 0, "法定代表人：", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 0, 2));
         String legalRepB = request.getPartyB().getLegalRepresentative() != null ? 
             "法定代表人：" + request.getPartyB().getLegalRepresentative() : "法定代表人：";
-        createCell(row2, 5, legalRepB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 5, 7));
+        createCell(row2, 3, legalRepB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 3, 5));
 
         Row row3 = sheet.createRow(signStartRow + 3);
         row3.setHeightInPoints(19);
-        createCell(row3, 0, "委托代表人：", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 0, 1));
+        createCell(row3, 0, "委托代表人：", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 0, 2));
         String delegateB = request.getPartyB().getDelegate() != null ? 
             "委托代表人：" + request.getPartyB().getDelegate() : "委托代表人：";
-        createCell(row3, 5, delegateB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 5, 7));
+        createCell(row3, 3, delegateB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 3, 5));
 
         Row row4 = sheet.createRow(signStartRow + 4);
         row4.setHeightInPoints(19);
         String phoneA = request.getPartyA().getPhone() != null ? "电    话：" + request.getPartyA().getPhone() : "电    话：";
-        createCell(row4, 0, phoneA, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 0, 1));
-        createCell(row4, 2, "签（公）证机关（章）", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 2, 4));
+        createCell(row4, 0, phoneA, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 0, 2));
         String phoneB = request.getPartyB().getPhone() != null ? "电    话：" + request.getPartyB().getPhone() : "电    话：";
-        createCell(row4, 5, phoneB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 5, 7));
+        createCell(row4, 3, phoneB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 3, 5));
+        createCell(row4, 6, "签（公）证机关（章）", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 6, 7));
 
         Row row5 = sheet.createRow(signStartRow + 5);
         row5.setHeightInPoints(19);
         String faxA = request.getPartyA().getFax() != null ? "传    真：" + request.getPartyA().getFax() : "传    真：";
-        createCell(row5, 0, faxA, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 0, 1));
+        createCell(row5, 0, faxA, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 0, 2));
         String faxB = request.getPartyB().getFax() != null ? "传    真：" + request.getPartyB().getFax() : "传    真：";
-        createCell(row5, 5, faxB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 5, 7));
+        createCell(row5, 3, faxB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 3, 5));
 
         Row row6 = sheet.createRow(signStartRow + 6);
         row6.setHeightInPoints(19);
         String bankA = request.getPartyA().getBank() != null ? "开户行：" + request.getPartyA().getBank() : "开户行：";
-        createCell(row6, 0, bankA, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 0, 1));
-        createCell(row6, 2, "         年    月    日", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 2, 4));
+        createCell(row6, 0, bankA, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 0, 2));
         String bankB = request.getPartyB().getBank() != null ? "开户行：" + request.getPartyB().getBank() : "开户行：";
-        createCell(row6, 5, bankB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 5, 7));
+        createCell(row6, 3, bankB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 3, 5));
+        createCell(row6, 6, "         年    月    日", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 6, 7));
 
         Row row7 = sheet.createRow(signStartRow + 7);
         row7.setHeightInPoints(19);
         String accountA = request.getPartyA().getAccount() != null ? "账    号：" + request.getPartyA().getAccount() : "账    号：";
-        createCell(row7, 0, accountA, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 0, 1));
-        createCell(row7, 2, "注：除国家另有规定外，签（公）证实行自愿原则", centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 2, 4));
+        createCell(row7, 0, accountA, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 0, 2));
         String accountB = request.getPartyB().getAccount() != null ? "账    号：" + request.getPartyB().getAccount() : "账    号：";
-        createCell(row7, 5, accountB, centerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 5, 7));
+        createCell(row7, 3, accountB, clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 3, 5));
+        createCell(row7, 6, "注：除国家另有规定外，签（公）证实行自愿原则", clauseStyle);
+        sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 6, 7));
     }
 
     /**
@@ -444,17 +672,28 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         if (request.getOutputPath() == null || request.getOutputPath().trim().isEmpty()) {
             throw new IllegalArgumentException("输出文件路径不能为空");
         }
-        if (request.getContractNumber() == null || request.getContractNumber().trim().isEmpty()) {
-            throw new IllegalArgumentException("合同编号不能为空");
-        }
-        if (request.getPartyA() == null) {
-            throw new IllegalArgumentException("甲方信息不能为空");
-        }
-        if (request.getPartyB() == null) {
-            throw new IllegalArgumentException("乙方信息不能为空");
-        }
-        if (request.getProducts() == null || request.getProducts().isEmpty()) {
-            throw new IllegalArgumentException("商品明细不能为空");
+        
+        boolean isEditMode = request.getEditMode() != null ? request.getEditMode() : false;
+        File outputFile = new File(request.getOutputPath());
+        boolean fileExists = outputFile.exists() && outputFile.length() > 0;
+        
+        if (isEditMode && fileExists) {
+            if (request.getContractNumber() == null || request.getContractNumber().trim().isEmpty()) {
+                throw new IllegalArgumentException("合同编号不能为空");
+            }
+        } else {
+            if (request.getContractNumber() == null || request.getContractNumber().trim().isEmpty()) {
+                throw new IllegalArgumentException("合同编号不能为空");
+            }
+            if (request.getPartyA() == null) {
+                throw new IllegalArgumentException("甲方信息不能为空");
+            }
+            if (request.getPartyB() == null) {
+                throw new IllegalArgumentException("乙方信息不能为空");
+            }
+            if (request.getProducts() == null || request.getProducts().isEmpty()) {
+                throw new IllegalArgumentException("商品明细不能为空");
+            }
         }
     }
 
@@ -553,8 +792,15 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
      */
     public static ToolCallback createToolCallback() {
         return FunctionToolCallback.builder("contract_generator", new ContractGeneratorTool())
-                .description("生成采购合同Excel文件。完全根据template-parser skill定义的格式和样式从零创建，" +
-                        "不依赖模版文件。自动填充合同信息、商品明细，并计算合计金额。支持金额大写转换。")
+                .description("生成或编辑采购合同Excel文件。" +
+                        "【重要】当editMode=true且文件已存在时，将编辑该文件而不是创建新文件。" +
+                        "支持从零创建合同，也支持编辑已存在的合同。" +
+                        "自动填充合同信息、商品明细，并计算合计金额。支持金额大写转换。" +
+                        "参数包括: outputPath输出路径(必填), contractNumber合同编号(必填), " +
+                        "partyA甲方信息(必填), partyB乙方信息(必填), products商品明细(必填), " +
+                        "editMode编辑模式(可选,默认false), signLocation签订地点, signDate签订时间, " +
+                        "deliveryDate交货时间, deliveryDays货运天数, deliveryAddress交货地点, deliveryContact交货联系人。" +
+                        "【推荐】编辑已存在的合同时，设置editMode=true以保留原有内容。")
                 .inputType(ContractRequest.class)
                 .build();
     }
@@ -565,22 +811,26 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
     @Data
     public static class ContractRequest {
         @JsonProperty(required = true)
-        @JsonPropertyDescription("输出文件路径，如: output/合同-HT-2025-001.xlsx")
+        @JsonPropertyDescription("输出文件路径，如: D:\\tmp\\合同-HT-2025-001.xlsx")
         private String outputPath;
 
         @JsonProperty(required = true)
         @JsonPropertyDescription("合同编号，如: HT-2025-001")
         private String contractNumber;
 
-        @JsonProperty(required = true)
+        @JsonProperty
+        @JsonPropertyDescription("编辑模式，true时如果文件已存在则编辑该文件，false时总是创建新文件。默认false")
+        private Boolean editMode;
+
+        @JsonProperty
         @JsonPropertyDescription("甲方（买方）信息")
         private PartyInfo partyA;
 
-        @JsonProperty(required = true)
+        @JsonProperty
         @JsonPropertyDescription("乙方（供方）信息")
         private PartyInfo partyB;
 
-        @JsonProperty(required = true)
+        @JsonProperty
         @JsonPropertyDescription("商品明细列表")
         private List<Product> products;
 

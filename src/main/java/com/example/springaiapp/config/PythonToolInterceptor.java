@@ -32,12 +32,11 @@ public class PythonToolInterceptor extends ToolInterceptor {
 
     @Override
     public ToolCallResponse interceptToolCall(ToolCallRequest request, ToolCallHandler handler) {
-        if (!PYTHON_TOOL_NAME.equals(request.getToolName())) {
+        if (!request.getToolName().contains(PYTHON_TOOL_NAME)) {
             return handler.call(request);
         }
 
         try {
-            String modifiedArgs = preprocessPythonArgs(request.getArguments());
             ToolCallRequest modifiedRequest = new ToolCallRequest(
                     request.getToolName(),
                     request.getArguments(),

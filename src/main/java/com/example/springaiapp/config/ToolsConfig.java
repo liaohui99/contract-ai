@@ -1,5 +1,8 @@
 package com.example.springaiapp.config;
 
+import com.example.springaiapp.skills.BatchExcelWriteTool;
+import com.example.springaiapp.skills.ExcelWriteTool;
+import com.example.springaiapp.skills.ExcelReadTool;
 import com.example.springaiapp.tools.TimeTool;
 import com.example.springaiapp.tools.UserLocationTool;
 import com.example.springaiapp.tools.WeatherTool;
@@ -40,6 +43,21 @@ public class ToolsConfig {
                 .inputType(String.class)
                 .build();
     }
+
+    @Bean
+    public ToolCallback excelWriteToolCallback(){
+        return ExcelWriteTool.createToolCallback();
+    }
+
+    @Bean
+    public ToolCallback batchExcelWriteToolCallback(){
+        return BatchExcelWriteTool.createToolCallback();
+    }
+
+    @Bean
+    public ToolCallback excelReadToolCallback(){
+        return ExcelReadTool.createToolCallback();
+    }
     
 /*    *//**
      * 将MCP工具回调作为列表提供，以便在agent中使用
@@ -49,6 +67,9 @@ public class ToolsConfig {
             ToolCallback weatherToolCallBack,
             ToolCallback timeToolCallBack,
             ToolCallback userLocationToolCallBack,
+            ToolCallback excelWriteToolCallback,
+            ToolCallback batchExcelWriteToolCallback,
+            ToolCallback excelReadToolCallback,
             SyncMcpToolCallbackProvider mcpToolCallbackProvider) {
         
         List<ToolCallback> allTools = new ArrayList<>();
@@ -57,6 +78,9 @@ public class ToolsConfig {
         allTools.add(weatherToolCallBack);
         allTools.add(timeToolCallBack);
         allTools.add(userLocationToolCallBack);
+        allTools.add(excelWriteToolCallback);
+        allTools.add(batchExcelWriteToolCallback);
+        allTools.add(excelReadToolCallback);
         
         // 添加MCP工具
         ToolCallback[] mcpTools = mcpToolCallbackProvider.getToolCallbacks();

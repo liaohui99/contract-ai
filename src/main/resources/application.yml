@@ -1,0 +1,39 @@
+spring:
+    application:
+        name: taorunhui-ai
+    ai:
+        dashscope:
+            api-key: ${BAI_LIAN_API_KEY}
+        alibaba:
+            python:
+                tool:
+                    enabled: false
+    mcp:
+        client:
+            enabled: true
+            name: taorunhui-mcp-client
+            version: 1.0.0
+            request-timeout: 30s
+            type: SYNC
+            stdio:
+                servers-configuration: classpath:mcp-servers.json
+                root-change-notification: true
+    skills:
+        # path: E:/study/AI/taorunhui-ai/src/main/resources/skills
+        path: skills
+
+python:
+    external:
+        packages:
+            path: D:/Software/anaconda3/Lib/site-packages
+
+server:
+    port: 7341
+
+logging:
+    level:
+        com:
+            alibaba:
+                cloud:
+                    ai:
+                        agent : DEBUG

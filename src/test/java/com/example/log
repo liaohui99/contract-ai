@@ -1,0 +1,325 @@
+E:\JDK\jdk-21.0.5\bin\java.exe -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:50650,suspend=y,server=n -XX:TieredStopAtLevel=1 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true "-Dmanagement.endpoints.jmx.exposure.include=*" -javaagent:C:\Users\lhk22\AppData\Local\JetBrains\IntelliJIdea2023.3\captureAgent\debugger-agent.jar=file:/C:/Users/lhk22/AppData/Local/Temp/capture.props -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "E:\study\AI\taorunhui-ai\target\classes;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.2.0\spring-boot-starter-web-3.2.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-starter\3.2.0\spring-boot-starter-3.2.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot\3.2.0\spring-boot-3.2.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.2.0\spring-boot-autoconfigure-3.2.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.2.0\spring-boot-starter-logging-3.2.0.jar;C:\Users\lhk22\.m2\repository\ch\qos\logback\logback-classic\1.4.11\logback-classic-1.4.11.jar;C:\Users\lhk22\.m2\repository\ch\qos\logback\logback-core\1.4.11\logback-core-1.4.11.jar;C:\Users\lhk22\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.21.1\log4j-to-slf4j-2.21.1.jar;C:\Users\lhk22\.m2\repository\org\slf4j\jul-to-slf4j\2.0.9\jul-to-slf4j-2.0.9.jar;C:\Users\lhk22\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\lhk22\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.2.0\spring-boot-starter-json-3.2.0.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.15.3\jackson-datatype-jdk8-2.15.3.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.15.3\jackson-datatype-jsr310-2.15.3.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.15.3\jackson-module-parameter-names-2.15.3.jar;C:\Users\lhk22\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.2.0\spring-boot-starter-tomcat-3.2.0.jar;C:\Users\lhk22\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.16\tomcat-embed-core-10.1.16.jar;C:\Users\lhk22\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.16\tomcat-embed-el-10.1.16.jar;C:\Users\lhk22\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.16\tomcat-embed-websocket-10.1.16.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-web\6.1.1\spring-web-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-beans\6.1.1\spring-beans-6.1.1.jar;C:\Users\lhk22\.m2\repository\io\micrometer\micrometer-observation\1.12.0\micrometer-observation-1.12.0.jar;C:\Users\lhk22\.m2\repository\io\micrometer\micrometer-commons\1.12.0\micrometer-commons-1.12.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-webmvc\6.1.1\spring-webmvc-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-aop\6.1.1\spring-aop-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-context\6.1.1\spring-context-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-expression\6.1.1\spring-expression-6.1.1.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-starter-dashscope\1.1.2.1\spring-ai-alibaba-starter-dashscope-1.1.2.1.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-autoconfigure-dashscope\1.1.2.1\spring-ai-alibaba-autoconfigure-dashscope-1.1.2.1.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-dashscope\1.1.2.1\spring-ai-alibaba-dashscope-1.1.2.1.jar;C:\Users\lhk22\.m2\repository\com\squareup\okhttp3\okhttp\4.12.0\okhttp-4.12.0.jar;C:\Users\lhk22\.m2\repository\com\squareup\okio\okio\3.6.0\okio-3.6.0.jar;C:\Users\lhk22\.m2\repository\com\squareup\okio\okio-jvm\3.6.0\okio-jvm-3.6.0.jar;C:\Users\lhk22\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.9.20\kotlin-stdlib-common-1.9.20.jar;C:\Users\lhk22\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk8\1.9.20\kotlin-stdlib-jdk8-1.9.20.jar;C:\Users\lhk22\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.9.20\kotlin-stdlib-1.9.20.jar;C:\Users\lhk22\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk7\1.9.20\kotlin-stdlib-jdk7-1.9.20.jar;C:\Users\lhk22\.m2\repository\com\squareup\okhttp3\logging-interceptor\4.12.0\logging-interceptor-4.12.0.jar;C:\Users\lhk22\.m2\repository\org\apache\opennlp\opennlp-tools\2.3.3\opennlp-tools-2.3.3.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-retry\1.1.2\spring-ai-autoconfigure-retry-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-model-tool\1.1.2\spring-ai-autoconfigure-model-tool-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-model-chat-client\1.1.2\spring-ai-autoconfigure-model-chat-client-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-model-chat-observation\1.1.2\spring-ai-autoconfigure-model-chat-observation-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-model-embedding-observation\1.1.2\spring-ai-autoconfigure-model-embedding-observation-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-autoconfigure-model-image-observation\1.1.2\spring-ai-autoconfigure-model-image-observation-1.1.2.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-agent-framework\1.1.2.0\spring-ai-alibaba-agent-framework-1.1.2.0.jar;C:\Users\lhk22\.m2\repository\io\modelcontextprotocol\sdk\mcp\0.14.0\mcp-0.14.0.jar;C:\Users\lhk22\.m2\repository\io\modelcontextprotocol\sdk\mcp-json-jackson2\0.14.0\mcp-json-jackson2-0.14.0.jar;C:\Users\lhk22\.m2\repository\io\modelcontextprotocol\sdk\mcp-json\0.14.0\mcp-json-0.14.0.jar;C:\Users\lhk22\.m2\repository\com\networknt\json-schema-validator\1.5.7\json-schema-validator-1.5.7.jar;C:\Users\lhk22\.m2\repository\com\ethlo\time\itu\1.10.3\itu-1.10.3.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-yaml\2.15.3\jackson-dataformat-yaml-2.15.3.jar;C:\Users\lhk22\.m2\repository\io\modelcontextprotocol\sdk\mcp-core\0.14.0\mcp-core-0.14.0.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-graph-core\1.1.2.0\spring-ai-alibaba-graph-core-1.1.2.0.jar;C:\Users\lhk22\.m2\repository\io\projectreactor\reactor-core\3.6.0\reactor-core-3.6.0.jar;C:\Users\lhk22\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-rag\1.1.2\spring-ai-rag-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-vector-store\1.1.2\spring-ai-vector-store-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-retry\1.1.2\spring-ai-retry-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\retry\spring-retry\2.0.4\spring-retry-2.0.4.jar;C:\Users\lhk22\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-deepseek\1.1.2\spring-ai-deepseek-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-context-support\6.1.1\spring-context-support-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-client-chat\1.1.2\spring-ai-client-chat-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\lhk22\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\lhk22\.m2\repository\io\opentelemetry\opentelemetry-api\1.31.0\opentelemetry-api-1.31.0.jar;C:\Users\lhk22\.m2\repository\io\opentelemetry\opentelemetry-context\1.31.0\opentelemetry-context-1.31.0.jar;C:\Users\lhk22\.m2\repository\io\github\a2asdk\a2a-java-sdk-client\0.2.5.Beta2\a2a-java-sdk-client-0.2.5.Beta2.jar;C:\Users\lhk22\.m2\repository\io\github\a2asdk\a2a-java-sdk-common\0.2.5.Beta2\a2a-java-sdk-common-0.2.5.Beta2.jar;C:\Users\lhk22\.m2\repository\io\github\a2asdk\a2a-java-sdk-spec\0.2.5.Beta2\a2a-java-sdk-spec-0.2.5.Beta2.jar;C:\Users\lhk22\.m2\repository\org\apache\commons\commons-lang3\3.13.0\commons-lang3-3.13.0.jar;C:\Users\lhk22\.m2\repository\org\apache\httpcomponents\httpclient\4.5.14\httpclient-4.5.14.jar;C:\Users\lhk22\.m2\repository\org\apache\httpcomponents\httpcore\4.4.16\httpcore-4.4.16.jar;C:\Users\lhk22\.m2\repository\com\alibaba\fastjson\1.2.83\fastjson-1.2.83.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-core\6.1.1\spring-core-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-jcl\6.1.1\spring-jcl-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.16.1\jackson-databind-2.16.1.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.3\jackson-annotations-2.15.3.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.3\jackson-core-2.15.3.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-starter-tool-calling-python\1.1.2.0\spring-ai-alibaba-starter-tool-calling-python-1.1.2.0.jar;C:\Users\lhk22\.m2\repository\com\alibaba\cloud\ai\spring-ai-alibaba-starter-tool-calling-common\1.1.2.0\spring-ai-alibaba-starter-tool-calling-common-1.1.2.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-webflux\6.1.1\spring-webflux-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar;C:\Users\lhk22\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2.3\httpcore5-5.2.3.jar;C:\Users\lhk22\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2.3\httpcore5-h2-5.2.3.jar;C:\Users\lhk22\.m2\repository\io\projectreactor\netty\reactor-netty-http\1.1.13\reactor-netty-http-1.1.13.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-codec-http\4.1.101.Final\netty-codec-http-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-common\4.1.101.Final\netty-common-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-buffer\4.1.101.Final\netty-buffer-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-transport\4.1.101.Final\netty-transport-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-codec\4.1.101.Final\netty-codec-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-handler\4.1.101.Final\netty-handler-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-codec-http2\4.1.101.Final\netty-codec-http2-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-resolver-dns\4.1.101.Final\netty-resolver-dns-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-resolver\4.1.101.Final\netty-resolver-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-codec-dns\4.1.101.Final\netty-codec-dns-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-resolver-dns-native-macos\4.1.101.Final\netty-resolver-dns-native-macos-4.1.101.Final-osx-x86_64.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-resolver-dns-classes-macos\4.1.101.Final\netty-resolver-dns-classes-macos-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-transport-native-epoll\4.1.101.Final\netty-transport-native-epoll-4.1.101.Final-linux-x86_64.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-transport-native-unix-common\4.1.101.Final\netty-transport-native-unix-common-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-transport-classes-epoll\4.1.101.Final\netty-transport-classes-epoll-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\projectreactor\netty\reactor-netty-core\1.1.13\reactor-netty-core-1.1.13.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-handler-proxy\4.1.101.Final\netty-handler-proxy-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\io\netty\netty-codec-socks\4.1.101.Final\netty-codec-socks-4.1.101.Final.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-commons\1.1.2\spring-ai-commons-1.1.2.jar;C:\Users\lhk22\.m2\repository\io\micrometer\micrometer-core\1.12.0\micrometer-core-1.12.0.jar;C:\Users\lhk22\.m2\repository\org\hdrhistogram\HdrHistogram\2.1.12\HdrHistogram-2.1.12.jar;C:\Users\lhk22\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\lhk22\.m2\repository\io\micrometer\context-propagation\1.1.3\context-propagation-1.1.3.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\jackson\module\jackson-module-jsonSchema\2.15.3\jackson-module-jsonSchema-2.15.3.jar;C:\Users\lhk22\.m2\repository\javax\validation\validation-api\1.1.0.Final\validation-api-1.1.0.Final.jar;C:\Users\lhk22\.m2\repository\com\knuddels\jtokkit\1.1.0\jtokkit-1.1.0.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-model\1.1.2\spring-ai-model-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\springframework\ai\spring-ai-template-st\1.1.2\spring-ai-template-st-1.1.2.jar;C:\Users\lhk22\.m2\repository\org\antlr\ST4\4.3.4\ST4-4.3.4.jar;C:\Users\lhk22\.m2\repository\org\antlr\antlr-runtime\3.5.3\antlr-runtime-3.5.3.jar;C:\Users\lhk22\.m2\repository\org\springframework\spring-messaging\6.1.1\spring-messaging-6.1.1.jar;C:\Users\lhk22\.m2\repository\org\antlr\antlr4-runtime\4.13.1\antlr4-runtime-4.13.1.jar;C:\Users\lhk22\.m2\repository\com\github\victools\jsonschema-generator\4.38.0\jsonschema-generator-4.38.0.jar;C:\Users\lhk22\.m2\repository\com\fasterxml\classmate\1.6.0\classmate-1.6.0.jar;C:\Users\lhk22\.m2\repository\com\github\victools\jsonschema-module-jackson\4.38.0\jsonschema-module-jackson-4.38.0.jar;C:\Users\lhk22\.m2\repository\com\github\victools\jsonschema-module-swagger-2\4.38.0\jsonschema-module-swagger-2-4.38.0.jar;C:\Users\lhk22\.m2\repository\io\swagger\core\v3\swagger-annotations-jakarta\2.2.38\swagger-annotations-jakarta-2.2.38.jar;C:\Users\lhk22\.m2\repository\org\graalvm\polyglot\polyglot\24.1.1\polyglot-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\collections\24.1.1\collections-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\nativeimage\24.1.1\nativeimage-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\python\python-language\24.1.1\python-language-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-api\24.1.1\truffle-api-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\tools\profiler-tool\24.1.1\profiler-tool-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\shadowed\json\24.1.1\json-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\regex\regex\24.1.1\regex-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-nfi\24.1.1\truffle-nfi-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-nfi-libffi\24.1.1\truffle-nfi-libffi-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\llvm\llvm-api\24.1.1\llvm-api-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\shadowed\icu4j\24.1.1\icu4j-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\shadowed\xz\24.1.1\xz-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.78.1\bcprov-jdk18on-1.78.1.jar;C:\Users\lhk22\.m2\repository\org\bouncycastle\bcpkix-jdk18on\1.78.1\bcpkix-jdk18on-1.78.1.jar;C:\Users\lhk22\.m2\repository\org\bouncycastle\bcutil-jdk18on\1.78.1\bcutil-jdk18on-1.78.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\python\python-resources\24.1.1\python-resources-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-runtime\24.1.1\truffle-runtime-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-enterprise\24.1.1\truffle-enterprise-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\truffle\truffle-compiler\24.1.1\truffle-compiler-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\jniutils\24.1.1\jniutils-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\nativebridge\24.1.1\nativebridge-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\graal-sdk\24.1.1\graal-sdk-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\graalvm\sdk\word\24.1.1\word-24.1.1.jar;C:\Users\lhk22\.m2\repository\org\apache\poi\poi\5.2.5\poi-5.2.5.jar;C:\Users\lhk22\.m2\repository\commons-codec\commons-codec\1.16.0\commons-codec-1.16.0.jar;C:\Users\lhk22\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\lhk22\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\lhk22\.m2\repository\commons-io\commons-io\2.15.0\commons-io-2.15.0.jar;C:\Users\lhk22\.m2\repository\com\zaxxer\SparseBitSet\1.3\SparseBitSet-1.3.jar;C:\Users\lhk22\.m2\repository\org\apache\logging\log4j\log4j-api\2.21.1\log4j-api-2.21.1.jar;C:\Users\lhk22\.m2\repository\org\apache\poi\poi-ooxml\5.2.5\poi-ooxml-5.2.5.jar;C:\Users\lhk22\.m2\repository\org\apache\poi\poi-ooxml-lite\5.2.5\poi-ooxml-lite-5.2.5.jar;C:\Users\lhk22\.m2\repository\org\apache\xmlbeans\xmlbeans\5.2.0\xmlbeans-5.2.0.jar;C:\Users\lhk22\.m2\repository\org\apache\commons\commons-compress\1.25.0\commons-compress-1.25.0.jar;C:\Users\lhk22\.m2\repository\com\github\virtuald\curvesapi\1.08\curvesapi-1.08.jar;D:\Software\IntelliJ IDEA 2023.3.8\lib\idea_rt.jar" com.example.springaiapp.TaoRunHuiApplication
+Connected to the target VM, address: '127.0.0.1:50650', transport: 'socket'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-03-03T12:50:18.888+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.TaoRunHuiApplication     : Starting TaoRunHuiApplication using Java 21.0.5 with PID 27536 (E:\study\AI\taorunhui-ai\target\classes started by 轮动科技 in E:\study\AI\spring-ai-study)
+2026-03-03T12:50:18.889+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.TaoRunHuiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-03-03T12:50:19.580+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 7341 (http)
+2026-03-03T12:50:19.587+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-03T12:50:19.587+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-03-03T12:50:19.634+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-03T12:50:19.634+08:00  INFO 27536 --- [taorunhui-ai] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 716 ms
+2026-03-03T12:50:20.156+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.s.service.AliBaiLianService          : 初始化DashScope API，API Key: 已设置
+2026-03-03T12:50:20.244+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.skills.CustomPythonTool  : 找到Python: python - Python 3.13.5
+2026-03-03T12:50:20.244+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.skills.CustomPythonTool  : 检测到Python解释器: python
+2026-03-03T12:50:20.244+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.skills.CustomPythonTool  : 检查Python依赖...
+2026-03-03T12:50:21.450+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.skills.CustomPythonTool  : 所有Python依赖已安装
+2026-03-03T12:50:21.483+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-03-03T12:50:21.686+08:00  INFO 27536 --- [taorunhui-ai] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 7341 (http) with context path ''
+2026-03-03T12:50:21.689+08:00  INFO 27536 --- [taorunhui-ai] [           main] c.e.springaiapp.TaoRunHuiApplication     : Started TaoRunHuiApplication in 3.044 seconds (process running for 3.704)
+2026-03-03T12:50:26.798+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-03T12:50:26.798+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-03T12:50:26.799+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+
+ 节点 '__START__' 执行完成
+2026-03-03T12:50:26.895+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] c.a.c.a.g.s.r.c.ClasspathSkillRegistry   : Reloading skills from classpath...
+2026-03-03T12:50:26.900+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] c.a.c.a.g.a.h.s.ShellToolAgentHook       : ShellToolAgentHook: Initializing shell session before agent execution
+2026-03-03T12:50:26.909+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] c.a.c.a.g.a.tools.ShellSessionManager    : Started shell session in workspace: E:\study\AI\spring-ai-study
+2026-03-03T12:50:26.909+08:00  INFO 27536 --- [taorunhui-ai] [nio-7341-exec-1] c.a.c.a.g.a.h.s.ShellToolAgentHook       : Shell session initialized successfully
+我将为您生成一个工时SaaS采购合同。首先，让我检查默认模板文件是否存在并了解其结构。
+
+2026-03-03T12:50:29.559+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.s.skills.ExcelAnalysisTool           : 开始分析Excel文件: E:\study\AI\taorunhui-ai\src\main\resources\hetong\template.xlsx
+2026-03-03T12:50:29.968+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.s.skills.ExcelAnalysisTool           : Excel文件分析成功
+现在我已了解模板文件的结构。让我读取模板内容以查看具体格式和需要填充的字段：
+
+2026-03-03T12:50:32.203+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-3] c.e.springaiapp.skills.ExcelReadTool     : 开始读取Excel文件: E:\study\AI\taorunhui-ai\src\main\resources\hetong\template.xlsx
+2026-03-03T12:50:32.228+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-3] c.e.springaiapp.skills.ExcelReadTool     : Excel文件读取成功，共31行数据
+现在我已了解模板的结构。这是一个采购合同模板，但需要针对"工时SaaS采购合同"进行定制。让我基于模板生成一个工时SaaS采购合同。
+
+根据模板结构，我需要填充以下关键信息：
+- 甲方（买方）：湖南陶润会文化传播有限公司工会委员会
+- 乙方（供方）：需要指定SaaS服务提供商
+- 合同编号、签订地点、签订时间
+- 服务内容：工时SaaS系统相关服务
+- 费用明细：SaaS订阅费用
+- 其他条款
+
+让我生成一个工时SaaS采购合同：
+
+
+2026-03-03T12:50:41.472+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.s.skills.ExcelGeneratorSkill         : 开始根据模板生成Excel: E:\study\AI\taorunhui-ai\src\main\resources\hetong\template.xlsx -> D:\tmp\工时SaaS采购合同.xlsx
+2026-03-03T12:50:56.857+08:00 ERROR 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.s.skills.ExcelGeneratorSkill         : AI生成数据失败: Unexpected character ('}' (code 125)): was expecting a colon to separate field name and value
+ at [Source: (String)"[
+  {"湖南陶润会文化传播有限公司工会委员会": "甲方（买方）：", "": "湖南陶润会文化传播有限公司工会委员会", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "乙方（供方）：", "": "湖南智工科技有限公司", "": "用户管理、工时记录、报表分析、移动端支持", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "一、购销物品项及数量价款：", "": "服务内容", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "采购合同", "": "合同编号：", "": "SAAS-2024-001", "": null"[truncated 760 chars]; line: 2, column: 144] (through reference chain: java.util.ArrayList[0])
+
+com.fasterxml.jackson.databind.JsonMappingException: Unexpected character ('}' (code 125)): was expecting a colon to separate field name and value
+ at [Source: (String)"[
+  {"湖南陶润会文化传播有限公司工会委员会": "甲方（买方）：", "": "湖南陶润会文化传播有限公司工会委员会", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "乙方（供方）：", "": "湖南智工科技有限公司", "": "用户管理、工时记录、报表分析、移动端支持", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "一、购销物品项及数量价款：", "": "服务内容", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "采购合同", "": "合同编号：", "": "SAAS-2024-001", "": null"[truncated 760 chars]; line: 2, column: 144] (through reference chain: java.util.ArrayList[0])
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:402) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:373) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer._deserializeFromArray(CollectionDeserializer.java:375) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:244) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:28) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4899) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3846) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3829) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.generateDataByAI(ExcelGeneratorSkill.java:251) ~[classes/:na]
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.apply(ExcelGeneratorSkill.java:77) ~[classes/:na]
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.apply(ExcelGeneratorSkill.java:38) ~[classes/:na]
+	at org.springframework.ai.tool.function.FunctionToolCallback.callMethod(FunctionToolCallback.java:113) ~[spring-ai-model-1.1.2.jar:1.1.2]
+	at org.springframework.ai.tool.function.FunctionToolCallback.call(FunctionToolCallback.java:104) ~[spring-ai-model-1.1.2.jar:1.1.2]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeSyncTool(AgentToolNode.java:778) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolByType(AgentToolNode.java:649) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.lambda$executeToolCallWithInterceptors$4(AgentToolNode.java:569) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.example.springaiapp.config.PythonToolInterceptor.interceptToolCall(PythonToolInterceptor.java:36) ~[classes/:na]
+	at com.alibaba.cloud.ai.graph.agent.interceptor.InterceptorChain.lambda$chainToolInterceptors$1(InterceptorChain.java:90) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallWithInterceptors(AgentToolNode.java:577) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallWithInterceptors(AgentToolNode.java:511) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallsSequential(AgentToolNode.java:230) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.apply(AgentToolNode.java:171) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.action.AsyncNodeActionWithConfig.lambda$node_async$0(AsyncNodeActionWithConfig.java:41) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.executeNode(NodeExecutor.java:123) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.execute(NodeExecutor.java:85) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.MainGraphExecutor.execute(MainGraphExecutor.java:108) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.lambda$processGraphResponseFlux$14(NodeExecutor.java:475) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at reactor.core.publisher.FluxDefer.subscribe(FluxDefer.java:46) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.InternalFluxOperator.subscribe(InternalFluxOperator.java:68) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:258) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray.subscribe(FluxConcatArray.java:78) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.InternalFluxOperator.subscribe(InternalFluxOperator.java:68) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:258) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableSubscriber.onComplete(FluxFilterFuseable.java:171) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:230) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onComplete(Operators.java:2231) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onComplete(FluxMapFuseable.java:152) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onComplete(FluxSwitchIfEmpty.java:85) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableSubscriber.onComplete(FluxFilterFuseable.java:171) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onComplete(FluxContextWrite.java:126) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxDoFinally$DoFinallySubscriber.onComplete(FluxDoFinally.java:128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onComplete(FluxContextWrite.java:126) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxDoFinally$DoFinallySubscriber.onComplete(FluxDoFinally.java:128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.doComplete(FluxPublishOn.java:1094) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.checkTerminated(FluxPublishOn.java:1128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.runAsync(FluxPublishOn.java:984) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.run(FluxPublishOn.java:1067) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.scheduler.WorkerTask.call(WorkerTask.java:84) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.scheduler.WorkerTask.call(WorkerTask.java:37) ~[reactor-core-3.6.0.jar:3.6.0]
+	at java.base/java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('}' (code 125)): was expecting a colon to separate field name and value
+ at [Source: (String)"[
+  {"湖南陶润会文化传播有限公司工会委员会": "甲方（买方）：", "": "湖南陶润会文化传播有限公司工会委员会", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "乙方（供方）：", "": "湖南智工科技有限公司", "": "用户管理、工时记录、报表分析、移动端支持", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "一、购销物品项及数量价款：", "": "服务内容", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "采购合同", "": "合同编号：", "": "SAAS-2024-001", "": null"[truncated 760 chars]; line: 2, column: 144]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:750) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportUnexpectedChar(ParserMinimalBase.java:674) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._skipColon2(ReaderBasedJsonParser.java:2389) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._skipColon(ReaderBasedJsonParser.java:2368) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextFieldName(ReaderBasedJsonParser.java:971) ~[jackson-core-2.15.3.jar:2.15.3]
+	at com.fasterxml.jackson.databind.deser.std.MapDeserializer._readAndBindStringKeyMap(MapDeserializer.java:608) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.MapDeserializer.deserialize(MapDeserializer.java:449) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.MapDeserializer.deserialize(MapDeserializer.java:32) ~[jackson-databind-2.16.1.jar:2.16.1]
+	at com.fasterxml.jackson.databind.deser.std.CollectionDeserializer._deserializeFromArray(CollectionDeserializer.java:359) ~[jackson-databind-2.16.1.jar:2.16.1]
+	... 99 common frames omitted
+
+2026-03-03T12:50:56.860+08:00 ERROR 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.s.skills.ExcelGeneratorSkill         : 生成Excel文件失败: AI生成数据失败: Unexpected character ('}' (code 125)): was expecting a colon to separate field name and value
+ at [Source: (String)"[
+  {"湖南陶润会文化传播有限公司工会委员会": "甲方（买方）：", "": "湖南陶润会文化传播有限公司工会委员会", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "乙方（供方）：", "": "湖南智工科技有限公司", "": "用户管理、工时记录、报表分析、移动端支持", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "一、购销物品项及数量价款：", "": "服务内容", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "采购合同", "": "合同编号：", "": "SAAS-2024-001", "": null"[truncated 760 chars]; line: 2, column: 144] (through reference chain: java.util.ArrayList[0])
+
+java.lang.RuntimeException: AI生成数据失败: Unexpected character ('}' (code 125)): was expecting a colon to separate field name and value
+ at [Source: (String)"[
+  {"湖南陶润会文化传播有限公司工会委员会": "甲方（买方）：", "": "湖南陶润会文化传播有限公司工会委员会", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "乙方（供方）：", "": "湖南智工科技有限公司", "": "用户管理、工时记录、报表分析、移动端支持", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "一、购销物品项及数量价款：", "": "服务内容", "": "工时管理SaaS系统年度订阅服务", "": 1, "": "项", "": 250000.00, "": 250000.00, "": "", ""},
+  {"湖南陶润会文化传播有限公司工会委员会": "采购合同", "": "合同编号：", "": "SAAS-2024-001", "": null"[truncated 760 chars]; line: 2, column: 144] (through reference chain: java.util.ArrayList[0])
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.generateDataByAI(ExcelGeneratorSkill.java:258) ~[classes/:na]
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.apply(ExcelGeneratorSkill.java:77) ~[classes/:na]
+	at com.example.springaiapp.skills.ExcelGeneratorSkill.apply(ExcelGeneratorSkill.java:38) ~[classes/:na]
+	at org.springframework.ai.tool.function.FunctionToolCallback.callMethod(FunctionToolCallback.java:113) ~[spring-ai-model-1.1.2.jar:1.1.2]
+	at org.springframework.ai.tool.function.FunctionToolCallback.call(FunctionToolCallback.java:104) ~[spring-ai-model-1.1.2.jar:1.1.2]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeSyncTool(AgentToolNode.java:778) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolByType(AgentToolNode.java:649) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.lambda$executeToolCallWithInterceptors$4(AgentToolNode.java:569) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.example.springaiapp.config.PythonToolInterceptor.interceptToolCall(PythonToolInterceptor.java:36) ~[classes/:na]
+	at com.alibaba.cloud.ai.graph.agent.interceptor.InterceptorChain.lambda$chainToolInterceptors$1(InterceptorChain.java:90) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallWithInterceptors(AgentToolNode.java:577) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallWithInterceptors(AgentToolNode.java:511) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.executeToolCallsSequential(AgentToolNode.java:230) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.agent.node.AgentToolNode.apply(AgentToolNode.java:171) ~[spring-ai-alibaba-agent-framework-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.action.AsyncNodeActionWithConfig.lambda$node_async$0(AsyncNodeActionWithConfig.java:41) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.executeNode(NodeExecutor.java:123) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.execute(NodeExecutor.java:85) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.MainGraphExecutor.execute(MainGraphExecutor.java:108) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at com.alibaba.cloud.ai.graph.executor.NodeExecutor.lambda$processGraphResponseFlux$14(NodeExecutor.java:475) ~[spring-ai-alibaba-graph-core-1.1.2.0.jar:1.1.2.0]
+	at reactor.core.publisher.FluxDefer.subscribe(FluxDefer.java:46) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.InternalFluxOperator.subscribe(InternalFluxOperator.java:68) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:258) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray.subscribe(FluxConcatArray.java:78) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.InternalFluxOperator.subscribe(InternalFluxOperator.java:68) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:258) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableSubscriber.onComplete(FluxFilterFuseable.java:171) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxConcatArray$ConcatArraySubscriber.onComplete(FluxConcatArray.java:230) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onComplete(Operators.java:2231) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableSubscriber.onComplete(FluxMapFuseable.java:152) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onComplete(FluxSwitchIfEmpty.java:85) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxFilterFuseable$FilterFuseableSubscriber.onComplete(FluxFilterFuseable.java:171) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onComplete(FluxContextWrite.java:126) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxDoFinally$DoFinallySubscriber.onComplete(FluxDoFinally.java:128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxMapFuseable$MapFuseableConditionalSubscriber.onComplete(FluxMapFuseable.java:350) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxHandleFuseable$HandleFuseableConditionalSubscriber.onComplete(FluxHandleFuseable.java:605) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onComplete(FluxContextWrite.java:126) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxDoFinally$DoFinallySubscriber.onComplete(FluxDoFinally.java:128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPeekFuseable$PeekFuseableConditionalSubscriber.onComplete(FluxPeekFuseable.java:595) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onComplete(FluxOnAssembly.java:549) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.doComplete(FluxPublishOn.java:1094) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.checkTerminated(FluxPublishOn.java:1128) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.runAsync(FluxPublishOn.java:984) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.publisher.FluxPublishOn$PublishOnConditionalSubscriber.run(FluxPublishOn.java:1067) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.scheduler.WorkerTask.call(WorkerTask.java:84) ~[reactor-core-3.6.0.jar:3.6.0]
+	at reactor.core.scheduler.WorkerTask.call(WorkerTask.java:37) ~[reactor-core-3.6.0.jar:3.6.0]
+	at java.base/java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+看起来AI生成数据时出现了格式问题。让我尝试另一种方法，使用excel_write工具来创建合同，基于模板结构进行数据填充。
+
+首先，让我重新分析模板的列结构，然后构建符合要求的数据：
+
+
+2026-03-03T12:50:59.820+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-3] c.e.s.skills.ExcelAnalysisTool           : 开始分析Excel文件: E:\study\AI\taorunhui-ai\src\main\resources\hetong\template.xlsx
+2026-03-03T12:50:59.839+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-3] c.e.s.skills.ExcelAnalysisTool           : Excel文件分析成功
+让我读取模板的前几行来理解列结构：
+
+
+2026-03-03T12:51:02.258+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.springaiapp.skills.ExcelReadTool     : 开始读取Excel文件: E:\study\AI\taorunhui-ai\src\main\resources\hetong\template.xlsx
+2026-03-03T12:51:02.274+08:00  INFO 27536 --- [taorunhui-ai] [oundedElastic-2] c.e.springaiapp.skills.ExcelReadTool     : Excel文件读取成功，共16行数据
+现在我理解了模板的列结构。让我构建一个符合工时SaaS采购合同要求的数据，并使用excel_write工具来创建新合同。
+
+基于模板，我需要创建以下数据结构：
+- 第1行：公司名称
+- 第2行："采购合同"
+- 第3行：甲方信息和合同编号
+- 第4行：签订地点
+- 第5行：乙方信息和签订时间
+- 第6行：服务条款标题
+- 第7行：表头（品名、规格型号、数量、单位、单价、含税金额、备注）
+- 第8+行：服务明细
+
+让我创建工时SaaS采购合同的数据：
+
+
+

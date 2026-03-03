@@ -1,0 +1,45 @@
+# Spring Boot 配置文件
+server:
+  port: 7340
+
+spring:
+  application:
+    name: taorunhui-ai
+  
+  # Spring AI 配置
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY:your-dashscope-api-key-here}
+      chat:
+        options:
+          model: qwen-max
+          temperature: 0.7
+          max-tokens: 2048
+
+# 阿里云通义千问(DashScope) 额外配置
+dashscope:
+  api:
+    key: ${DASHSCOPE_API_KEY:your-dashscope-api-key-here}
+  chat:
+    options:
+      model: qwen-max
+      temperature: 0.7
+      max-tokens: 2048
+
+# 日志配置
+logging:
+  level:
+    org.springframework.ai: DEBUG
+    com.taorunhui: DEBUG
+    com.alibaba.cloud.ai: DEBUG
+
+# 自定义配置
+taorunhui:
+  ai:
+    streaming:
+      enabled: true
+      buffer-size: 1024
+      timeout: 30000
+    react-agent:
+      max-thoughts: 5
+      enable-reasoning: true

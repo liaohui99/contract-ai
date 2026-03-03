@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI聊天界面</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user {
+            align-self: flex-end;
+            background: #4a90e2;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .ai {
+            align-self: flex-start;
+            background: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .error {
+            align-self: flex-start;
+            background: #ffebee;
+            color: #c62828;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .typing-indicator {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .chat-input-form {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .chat-input:focus {
+            border-color: #4a90e2;
+        }
+        
+        .send-button, .agent-button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .send-button {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .agent-button {
+            background: #66bb6a;
+            color: white;
+        }
+        
+        .send-button:hover, .agent-button:hover {
+            opacity: 0.9;
+        }
+        
+        .send-button:disabled, .agent-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .api-info {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .api-info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .api-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .api-info li {
+            margin: 5px 0;
+        }
+        
+        .api-info code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI聊天助手</h1>
+            <p>基于Spring AI和阿里云通义千问的流式响应聊天系统</p>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <div class="message-content">您好！我是AI助手，可以帮您解答问题、分析合同等。请输入您的问题。</div>
+                </div>
+            </div>
+            
+        <div class="controls">
+            <div class="session-controls">
+                <span id="sessionIdLabel">会话ID: session-</span>
+                <button id="clearSessionButton" class="clear-session-btn">清空会话</button>
+            </div>
+            <div class="history-toggle">
+                <label>
+                    <input type="checkbox" id="useHistoryCheckbox">
+                    使用对话历史
+                </label>
+            </div>
+            <div class="skill-controls">
+                <select id="skillSelect">
+                    <option value="">选择技能...</option>
+                    <option value="reviewContract">合同审核</option>
+                    <option value="explainClause">条款解释</option>
+                    <option value="generateContractTemplate">合同模板生成</option>
+                    <option value="compareContracts">合同对比</option>
+                    <option value="assessRisk">风险评估</option>
+                    <option value="optimizeClause">条款优化</option>
+                </select>
+                <button id="executeSkillButton" class="skill-button">执行技能</button>
+            </div>
+        </div>
+        
+        <form id="chatForm" class="chat-input-form">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="输入您的消息..." 
+                autocomplete="off"
+                class="chat-input"
+            >
+            <button type="button" id="simpleButton" class="simple-button">普通聊天</button>
+            <button type="submit" id="sendButton" class="send-button">流式发送</button>
+            <button type="button" id="agentButton" class="agent-button">React Agent</button>
+        </form>
+    </div>
+    
+    <div class="api-info">
+        <h3>API接口信息</h3>
+        <ul>
+            <li><strong>简单聊天:</strong> <code>GET /api/ai/simple-chat?message=xxx</code></li>
+            <li><strong>流式聊天:</strong> <code>GET /api/ai/stream-chat?message=xxx</code> (SSE)</li>
+            <li><strong>带历史流式聊天:</strong> <code>GET /api/ai/stream-chat-with-history?message=xxx</code> (SSE)</li>
+            <li><strong>React Agent:</strong> <code>GET /api/ai/react-agent?message=xxx</code> (SSE)</li>
+            <li><strong>合同审核:</strong> <code>GET /api/ai/contract-review?contractText=xxx</code> (SSE)</li>
+            <li><strong>技能合同审核:</strong> <code>GET /api/ai/skill-contract-review?contractText=xxx</code> (SSE)</li>
+            <li><strong>技能列表:</strong> <code>GET /api/ai/skills</code></li>
+            <li><strong>执行技能:</strong> <code>POST /api/execute-skill</code></li>
+        </ul>
+        <p>流式响应使用Server-Sent Events (SSE)，可以实时接收AI的回复。</p>
+    </div>
+</div>
+
+    <script>
+        // JavaScript实现流式聊天客户端
+        class ChatClient {
+            constructor(baseUrl = 'http://localhost:7340') {
+                this.baseUrl = baseUrl;
+                this.eventSource = null;
+                this.isLoading = false;
+                this.sessionId = 'session-' + Date.now();
+                
+                // 更新页面上的会话ID
+                document.getElementById('sessionIdLabel').textContent = `会话ID: ${this.sessionId}`;
+            }
+
+            // 发送消息
+            sendMessage(message, useAgent = false, useHistory = false) {
+                if (!message.trim() || this.isLoading) return;
+
+                this.addMessage('user', message);
+                this.setLoading(true);
+
+                // 关闭之前的连接
+                this.closeConnection();
+
+                // 确定使用的API端点
+                let endpoint = useAgent ? 'react-agent' : (useHistory ? 'stream-chat-with-history' : 'stream-chat');
+                const encodedMessage = encodeURIComponent(message);
+                let url;
+                
+                if (useHistory) {
+                    url = `${this.baseUrl}/api/ai/${endpoint}?message=${encodedMessage}&sessionId=${this.sessionId}`;
+                } else {
+                    url = `${this.baseUrl}/api/ai/${endpoint}?message=${encodedMessage}`;
+                }
+
+                // 创建SSE连接
+                this.eventSource = new EventSource(url);
+
+                let fullContent = '';
+                const aiMessageId = this.addMessage('ai', '');
+
+                this.eventSource.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        
+                        switch (data.name) {
+                            case 'chunk':
+                            case 'response':
+                                fullContent += data.data;
+                                this.updateMessageContent(aiMessageId, fullContent);
+                                break;
+                                
+                            case 'thought':
+                            case 'action':
+                            case 'observation':
+                                fullContent += `\n[${data.name}] ${data.data}`;
+                                this.updateMessageContent(aiMessageId, fullContent);
+                                break;
+                                
+                            case 'complete':
+                            case 'result':
+                                fullContent += `\n${data.data}`;
+                                this.updateMessageContent(aiMessageId, fullContent);
+                                this.closeConnection();
+                                this.setLoading(false);
+                                break;
+                                
+                            case 'step':
+                                fullContent += `\n${data.data}`;
+                                this.updateMessageContent(aiMessageId, fullContent);
+                                break;
+                        }
+                    } catch (e) {
+                        console.error('Error parsing SSE data:', e);
+                        this.updateMessageContent(aiMessageId, '数据解析错误');
+                        this.closeConnection();
+                        this.setLoading(false);
+                    }
+                };
+
+                this.eventSource.onerror = (err) => {
+                    console.error('SSE connection error:', err);
+                    this.updateMessageContent(aiMessageId, '连接错误，请重试');
+                    this.closeConnection();
+                    this.setLoading(false);
+                };
+            }
+
+            // 发送普通消息（非流式）
+            sendSimpleMessage(message, useHistory = false) {
+                if (!message.trim() || this.isLoading) return;
+
+                this.addMessage('user', message);
+                this.setLoading(true);
+
+                const encodedMessage = encodeURIComponent(message);
+                let url;
+                
+                if (useHistory) {
+                    url = `${this.baseUrl}/api/ai/chat-with-history?message=${encodedMessage}&sessionId=${this.sessionId}`;
+                } else {
+                    url = `${this.baseUrl}/api/ai/simple-chat?message=${encodedMessage}`;
+                }
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(responseText => {
+                        this.addMessage('ai', responseText);
+                    })
+                    .catch(error => {
+                        console.error('Simple chat error:', error);
+                        this.addMessage('error', '请求失败，请重试');
+                    })
+                    .finally(() => {
+                        this.setLoading(false);
+                    });
+            }
+
+            // 执行技能
+            executeSkill(skillName, params) {
+                if (!skillName || this.isLoading) return;
+
+                this.addMessage('user', `执行技能: ${skillName}`);
+                this.setLoading(true);
+
+                fetch(`${this.baseUrl}/api/ai/execute-skill`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                })
+                .then(response => response.text())
+                .then(responseText => {
+                    this.addMessage('ai', `技能结果: ${responseText}`);
+                })
+                .catch(error => {
+                    console.error('Skill execution error:', error);
+                    this.addMessage('error', '技能执行失败，请重试');
+                })
+                .finally(() => {
+                    this.setLoading(false);
+                });
+            }
+
+            // 添加消息到聊天记录
+            addMessage(type, content) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const messageId = Date.now().toString();
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.id = `msg-${messageId}`;
+                messageDiv.innerHTML = `<div class="message-content">${this.escapeHtml(content)}</div>`;
+                
+                messagesDiv.appendChild(messageDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                
+                return messageId;
+            }
+
+            // 更新消息内容
+            updateMessageContent(messageId, content) {
+                const messageElement = document.getElementById(`msg-${messageId}`);
+                if (messageElement) {
+                    messageElement.querySelector('.message-content').innerHTML = this.escapeHtml(content);
+                    document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+                }
+            }
+
+            // 转义HTML防止XSS
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // 设置加载状态
+            setLoading(loading) {
+                this.isLoading = loading;
+                const sendBtn = document.getElementById('sendButton');
+                const simpleBtn = document.getElementById('simpleButton');
+                const agentBtn = document.getElementById('agentButton');
+                const skillBtn = document.getElementById('executeSkillButton');
+                const input = document.getElementById('messageInput');
+                
+                sendBtn.disabled = loading;
+                simpleBtn.disabled = loading;
+                agentBtn.disabled = loading;
+                skillBtn.disabled = loading;
+                input.disabled = loading;
+                
+                if (loading) {
+                    sendBtn.textContent = '发送中...';
+                    simpleBtn.textContent = '发送中...';
+                    skillBtn.textContent = '执行中...';
+                } else {
+                    sendBtn.textContent = '流式发送';
+                    simpleBtn.textContent = '普通聊天';
+                    skillBtn.textContent = '执行技能';
+                }
+            }
+
+            // 关闭连接
+            closeConnection() {
+                if (this.eventSource) {
+                    this.eventSource.close();
+                    this.eventSource = null;
+                }
+            }
+
+            // 清空会话
+            clearSession() {
+                fetch(`${this.baseUrl}/api/ai/clear-session/${this.sessionId}`, {
+                    method: 'POST'
+                }).then(() => {
+                    // 清空聊天记录
+                    document.getElementById('chatMessages').innerHTML = `
+                        <div class="message ai">
+                            <div class="message-content">会话已清空。请输入您的问题。</div>
+                        </div>
+                    `;
+                    // 生成新的会话ID
+                    this.sessionId = 'session-' + Date.now();
+                    document.getElementById('sessionIdLabel').textContent = `会话ID: ${this.sessionId}`;
+                });
+            }
+        }
+
+        // 初始化聊天客户端
+        const chatClient = new ChatClient();
+
+        // 设置表单提交事件
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            const useHistory = document.getElementById('useHistoryCheckbox').checked;
+            
+            if (message) {
+                chatClient.sendMessage(message, false, useHistory);
+                input.value = '';
+            }
+        });
+
+        // 设置普通聊天按钮事件
+        document.getElementById('simpleButton').addEventListener('click', function() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            const useHistory = document.getElementById('useHistoryCheckbox').checked;
+            
+            if (message) {
+                chatClient.sendSimpleMessage(message, useHistory);
+                input.value = '';
+            }
+        });
+
+        // 设置Agent按钮事件
+        document.getElementById('agentButton').addEventListener('click', function() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                chatClient.sendMessage(message, true, false);
+                input.value = '';
+            }
+        });
+
+        // 设置技能执行按钮事件
+        document.getElementById('executeSkillButton').addEventListener('click', function() {
+            const skillSelect = document.getElementById('skillSelect');
+            const selectedSkill = skillSelect.value;
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (selectedSkill && message) {
+                const params = {};
+                switch(selectedSkill) {
+                    case 'reviewContract':
+                    case 'assessRisk':
+                        params.contractText = message;
+                        break;
+                    case 'explainClause':
+                    case 'optimizeClause':
+                        params.clauseText = message;
+                        break;
+                    case 'generateContractTemplate':
+                        params.requirements = message;
+                        params.type = 'standard';
+                        break;
+                    case 'compareContracts':
+                        params.contract1 = message;
+                        // 在实际应用中，这里需要两个合同文本
+                        params.contract2 = message; // 简化处理
+                        break;
+                    default:
+                        params.argument = message;
+                }
+                
+                chatClient.executeSkill(selectedSkill, params);
+                input.value = '';
+            }
+        });
+
+        // 清空会话按钮
+        document.getElementById('clearSessionButton').addEventListener('click', function() {
+            chatClient.clearSession();
+        });
+
+        // 输入框回车事件
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('chatForm').requestSubmit();
+            }
+        });
+    </script>
+</body>
+</html>

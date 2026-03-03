@@ -1,0 +1,42 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+*.sw?
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Runtime
+logs
+*.pid
+
+# Environment
+.env
+local.properties
+
+# Build
+build/
+out/
+
+# Testing
+*.log
+test-output/
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Secrets
+*.key
+*.pem
+*.crt
+*.cert

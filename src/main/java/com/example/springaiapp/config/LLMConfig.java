@@ -61,8 +61,8 @@ public class LLMConfig {
                 .interceptors(pythonInterceptor)
                 .hooks(List.of(registerSkills,shellHook))
                 .systemPrompt(""" 
-                        你是一个合同生成助手，可根据用户需求修改或生成合同，如果生成新合同，请参考技能template-parser规范合同‘
-                        合同相关的需求不明确可向用户提问，可调用excel-tools技能读取相关文件信息；
+                        你是一个合同生成助手，可根据用户需求修改或生成合同，如果生成新合同，请参考template-parser技能中定义的合同规范；
+                        合同相关的需求不明确可向用户提问，可调用excel-read、excel-write、contract-generator等工具处理合同文件；
                         默认使用中文回答;
                         生成的合同默认保存至D:\\tmp目录下
                         """

@@ -54,9 +54,11 @@ public class ContractTemplateProcessor {
             Sheet sheet = workbook.getSheetAt(0);
 
             if (clearStartCell != null && clearEndCell != null) {
+                log.info("清除区域: {} - {}", clearStartCell, clearEndCell);
                 clearCellRange(sheet, clearStartCell, clearEndCell);
             }
 
+            int cellsUpdated = 0;
             for (Map.Entry<String, Object> entry : data.entrySet()) {
                 String cellRef = entry.getKey();
                 Object value = entry.getValue();
@@ -64,6 +66,9 @@ public class ContractTemplateProcessor {
                 Cell cell = getCellByReference(sheet, cellRef);
                 if (cell != null) {
                     setCellValuePreserveStyle(cell, value);
+                    cellsUpdated++;
+                } else {
+                    log.warn("无法找到或创建单元格: {}", cellRef);
                 }
             }
 
@@ -71,7 +76,7 @@ public class ContractTemplateProcessor {
                 workbook.write(fos);
             }
 
-            log.info("合同生成成功: {}", outputPath);
+            log.info("合同生成成功: {}, 共更新了 {} 个单元格", outputPath, cellsUpdated);
         }
     }
 
@@ -247,21 +252,41 @@ public class ContractTemplateProcessor {
      * 设置单元格值，完全保留原有样式
      */
     private static void setCellValuePreserveStyle(Cell cell, Object value) {
+        if (cell == null) {
+            log.warn("尝试设置空单元格的值");
+            return;
+        }
+        
         if (value == null) {
             cell.setBlank();
+            log.debug("单元格已清空: {}{}", 
+                (char)('A' + cell.getColumnIndex()), 
+                cell.getRowIndex() + 1);
             return;
         }
 
-        if (value instanceof String) {
-            cell.setCellValue((String) value);
-        } else if (value instanceof Number) {
-            cell.setCellValue(((Number) value).doubleValue());
-        } else if (value instanceof Boolean) {
-            cell.setCellValue((Boolean) value);
-        } else if (value instanceof java.util.Date) {
-            cell.setCellValue((java.util.Date) value);
-        } else {
-            cell.setCellValue(value.toString());
+        try {
+            if (value instanceof String) {
+                cell.setCellValue((String) value);
+            } else if (value instanceof Number) {
+                cell.setCellValue(((Number) value).doubleValue());
+            } else if (value instanceof Boolean) {
+                cell.setCellValue((Boolean) value);
+            } else if (value instanceof java.util.Date) {
+                cell.setCellValue((java.util.Date) value);
+            } else {
+                cell.setCellValue(value.toString());
+            }
+            log.debug("成功设置单元格值: {}{} = {}", 
+                (char)('A' + cell.getColumnIndex()), 
+                cell.getRowIndex() + 1,
+                value.toString().substring(0, Math.min(50, value.toString().length())));
+        } catch (Exception e) {
+            log.error("设置单元格值失败: {}{} = {}, 错误: {}", 
+                (char)('A' + cell.getColumnIndex()), 
+                cell.getRowIndex() + 1,
+                value,
+                e.getMessage());
         }
     }
 }

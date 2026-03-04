@@ -44,17 +44,14 @@ public class ToolsConfig {
                 .build();
     }
 
-    @Bean
-    public ToolCallback excelWriteToolCallback(){
-        return ExcelWriteTool.createToolCallback();
-    }
+
 
     @Bean
     public ToolCallback batchExcelWriteToolCallback(){
         return BatchExcelWriteTool.createToolCallback();
     }
 
-    @Bean
+    //@Bean
     public ToolCallback excelReadToolCallback(){
         return ExcelReadTool.createToolCallback();
     }

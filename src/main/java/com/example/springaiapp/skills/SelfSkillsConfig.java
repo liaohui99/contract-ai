@@ -61,4 +61,12 @@ public class SelfSkillsConfig {
     public ToolCallback contractGeneratorToolCallback() {
         return ContractGeneratorTool.createToolCallback();
     }
+
+    /**
+     * 注册合同智能解析工具
+     */
+    @Bean
+    public ToolCallback contractAnalyzerToolCallback() {
+        return ContractAnalyzerTool.createToolCallback();
+    }
 }

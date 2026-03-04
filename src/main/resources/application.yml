@@ -4,6 +4,15 @@ spring:
     ai:
         dashscope:
             api-key: ${BAI_LIAN_API_KEY}
+            chat:
+                options:
+                    model: qwen-plus-2025-04-28
+            embedding:
+                options:
+                    model: text-embedding-v1
+            rerank:
+                options:
+                    model: qwen3-rerank
         alibaba:
             python:
                 tool:
@@ -21,6 +30,10 @@ spring:
     skills:
         # path: E:/study/AI/taorunhui-ai/src/main/resources/skills
         path: skills
+    servlet:
+        multipart:
+            max-file-size: 20MB
+            max-request-size: 20MB
 
 python:
     external:
@@ -29,6 +42,10 @@ python:
 
 server:
     port: 7341
+
+app:
+    upload:
+        dir: D:/tmp/taorunhui-uploads  # 默认项目根目录下的 uploads 文件夹
 
 logging:
     level:

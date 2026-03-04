@@ -47,6 +47,7 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
     private CellStyle dataStyle;
     private CellStyle clauseStyle;
     private CellStyle centerStyle;
+    private CellStyle infoTableStyle;
 
     /**
      * 生成或编辑采购合同Excel文件
@@ -184,6 +185,15 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         centerStyle.setFont(dataFont);
         centerStyle.setAlignment(HorizontalAlignment.CENTER);
         centerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        infoTableStyle = workbook.createCellStyle();
+        infoTableStyle.setFont(dataFont);
+        infoTableStyle.setAlignment(HorizontalAlignment.LEFT);
+        infoTableStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        infoTableStyle.setBorderTop(BorderStyle.THIN);
+        infoTableStyle.setBorderBottom(BorderStyle.THIN);
+        infoTableStyle.setBorderLeft(BorderStyle.THIN);
+        infoTableStyle.setBorderRight(BorderStyle.THIN);
     }
 
     /**
@@ -409,6 +419,15 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         centerStyle.setFont(dataFont);
         centerStyle.setAlignment(HorizontalAlignment.CENTER);
         centerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        infoTableStyle = workbook.createCellStyle();
+        infoTableStyle.setFont(dataFont);
+        infoTableStyle.setAlignment(HorizontalAlignment.LEFT);
+        infoTableStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        infoTableStyle.setBorderTop(BorderStyle.THIN);
+        infoTableStyle.setBorderBottom(BorderStyle.THIN);
+        infoTableStyle.setBorderLeft(BorderStyle.THIN);
+        infoTableStyle.setBorderRight(BorderStyle.THIN);
     }
 
     /**
@@ -568,82 +587,102 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
     private void createSignatureSection(ContractRequest request) {
         int signStartRow = 7 + request.getProducts().size() + 2 + 9 + 1;
 
-        Row row0 = sheet.createRow(signStartRow);
-        row0.setHeightInPoints(19);
-        Cell buyerCell = createCell(row0, 0, "购货方", centerStyle);
+        // 为整个签章区域创建所有行和单元格，确保每个单元格都有边框
+        for (int rowNum = signStartRow; rowNum <= signStartRow + 7; rowNum++) {
+            Row row = sheet.getRow(rowNum);
+            if (row == null) {
+                row = sheet.createRow(rowNum);
+                row.setHeightInPoints(19);
+            }
+            // 为每一行创建所有8个单元格，确保完整的边框
+            for (int colNum = 0; colNum < 8; colNum++) {
+                Cell cell = row.getCell(colNum);
+                if (cell == null) {
+                    cell = row.createCell(colNum);
+                    cell.setCellStyle(infoTableStyle);
+                }
+            }
+        }
+
+        // 第一行 - 标题
+        Row row0 = sheet.getRow(signStartRow);
+        Cell buyerCell = row0.getCell(0);
+        buyerCell.setCellValue("购货方");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 0, 2));
-        Cell sellerCell = createCell(row0, 3, "供货方", centerStyle);
+        Cell sellerCell = row0.getCell(3);
+        sellerCell.setCellValue("供货方");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 3, 5));
-        Cell notaryCell = createCell(row0, 6, "签（公）证意见：", centerStyle);
+        Cell notaryCell = row0.getCell(6);
+        notaryCell.setCellValue("签（公）证意见：");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow, signStartRow, 6, 7));
 
-        Row row1 = sheet.createRow(signStartRow + 1);
-        row1.setHeightInPoints(19);
-        createCell(row1, 0, "单位名称（盖章）：" + request.getPartyA().getName(), clauseStyle);
+        // 第二行
+        Row row1 = sheet.getRow(signStartRow + 1);
+        row1.getCell(0).setCellValue("单位名称（盖章）：" + request.getPartyA().getName());
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 0, 2));
-        createCell(row1, 3, "单位名称（盖章）：" + request.getPartyB().getName(), clauseStyle);
+        row1.getCell(3).setCellValue("单位名称（盖章）：" + request.getPartyB().getName());
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 3, 5));
-        createCell(row1, 6, "经办人：", clauseStyle);
+        row1.getCell(6).setCellValue("经办人：");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 1, signStartRow + 1, 6, 7));
 
-        Row row2 = sheet.createRow(signStartRow + 2);
-        row2.setHeightInPoints(19);
-        createCell(row2, 0, "法定代表人：", clauseStyle);
+        // 第三行
+        Row row2 = sheet.getRow(signStartRow + 2);
+        row2.getCell(0).setCellValue("法定代表人：");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 0, 2));
         String legalRepB = request.getPartyB().getLegalRepresentative() != null ? 
             "法定代表人：" + request.getPartyB().getLegalRepresentative() : "法定代表人：";
-        createCell(row2, 3, legalRepB, clauseStyle);
+        row2.getCell(3).setCellValue(legalRepB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 2, signStartRow + 2, 3, 5));
 
-        Row row3 = sheet.createRow(signStartRow + 3);
-        row3.setHeightInPoints(19);
-        createCell(row3, 0, "委托代表人：", clauseStyle);
+        // 第四行
+        Row row3 = sheet.getRow(signStartRow + 3);
+        row3.getCell(0).setCellValue("委托代表人：");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 0, 2));
         String delegateB = request.getPartyB().getDelegate() != null ? 
             "委托代表人：" + request.getPartyB().getDelegate() : "委托代表人：";
-        createCell(row3, 3, delegateB, clauseStyle);
+        row3.getCell(3).setCellValue(delegateB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 3, signStartRow + 3, 3, 5));
 
-        Row row4 = sheet.createRow(signStartRow + 4);
-        row4.setHeightInPoints(19);
+        // 第五行
+        Row row4 = sheet.getRow(signStartRow + 4);
         String phoneA = request.getPartyA().getPhone() != null ? "电    话：" + request.getPartyA().getPhone() : "电    话：";
-        createCell(row4, 0, phoneA, clauseStyle);
+        row4.getCell(0).setCellValue(phoneA);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 0, 2));
         String phoneB = request.getPartyB().getPhone() != null ? "电    话：" + request.getPartyB().getPhone() : "电    话：";
-        createCell(row4, 3, phoneB, clauseStyle);
+        row4.getCell(3).setCellValue(phoneB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 3, 5));
-        createCell(row4, 6, "签（公）证机关（章）", clauseStyle);
+        row4.getCell(6).setCellValue("签（公）证机关（章）");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 4, signStartRow + 4, 6, 7));
 
-        Row row5 = sheet.createRow(signStartRow + 5);
-        row5.setHeightInPoints(19);
+        // 第六行
+        Row row5 = sheet.getRow(signStartRow + 5);
         String faxA = request.getPartyA().getFax() != null ? "传    真：" + request.getPartyA().getFax() : "传    真：";
-        createCell(row5, 0, faxA, clauseStyle);
+        row5.getCell(0).setCellValue(faxA);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 0, 2));
         String faxB = request.getPartyB().getFax() != null ? "传    真：" + request.getPartyB().getFax() : "传    真：";
-        createCell(row5, 3, faxB, clauseStyle);
+        row5.getCell(3).setCellValue(faxB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 5, signStartRow + 5, 3, 5));
 
-        Row row6 = sheet.createRow(signStartRow + 6);
-        row6.setHeightInPoints(19);
+        // 第七行
+        Row row6 = sheet.getRow(signStartRow + 6);
         String bankA = request.getPartyA().getBank() != null ? "开户行：" + request.getPartyA().getBank() : "开户行：";
-        createCell(row6, 0, bankA, clauseStyle);
+        row6.getCell(0).setCellValue(bankA);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 0, 2));
         String bankB = request.getPartyB().getBank() != null ? "开户行：" + request.getPartyB().getBank() : "开户行：";
-        createCell(row6, 3, bankB, clauseStyle);
+        row6.getCell(3).setCellValue(bankB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 3, 5));
-        createCell(row6, 6, "         年    月    日", clauseStyle);
+        row6.getCell(6).setCellValue("         年    月    日");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 6, signStartRow + 6, 6, 7));
 
-        Row row7 = sheet.createRow(signStartRow + 7);
-        row7.setHeightInPoints(19);
+        // 第八行
+        Row row7 = sheet.getRow(signStartRow + 7);
         String accountA = request.getPartyA().getAccount() != null ? "账    号：" + request.getPartyA().getAccount() : "账    号：";
-        createCell(row7, 0, accountA, clauseStyle);
+        row7.getCell(0).setCellValue(accountA);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 0, 2));
         String accountB = request.getPartyB().getAccount() != null ? "账    号：" + request.getPartyB().getAccount() : "账    号：";
-        createCell(row7, 3, accountB, clauseStyle);
+        row7.getCell(3).setCellValue(accountB);
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 3, 5));
-        createCell(row7, 6, "注：除国家另有规定外，签（公）证实行自愿原则", clauseStyle);
+        row7.getCell(6).setCellValue("注：除国家另有规定外，签（公）证实行自愿原则");
         sheet.addMergedRegion(new CellRangeAddress(signStartRow + 7, signStartRow + 7, 6, 7));
     }
 

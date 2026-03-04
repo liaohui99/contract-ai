@@ -129,4 +129,8 @@ public class ApplicationConfig {
     @Value("${spring.skills.path}")
     private String skillsPath;
 
+
+    @Value("${app.upload.dir}")
+    private String uploadDir ;
+
 }

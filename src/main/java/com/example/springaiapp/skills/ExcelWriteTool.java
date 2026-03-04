@@ -182,6 +182,11 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
             sheet.autoSizeColumn(i);
         }
 
+        // 自适应行高
+        if (data != null) {
+            autoFitRowHeights(sheet, data, startRowNum);
+        }
+
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             workbook.write(fos);
         }
@@ -240,6 +245,11 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
                         setCellValueWithStyle(cell, rowData.get(j), dateStyle);
                     }
                 }
+            }
+
+            // 自适应行高
+            if (data != null) {
+                autoFitRowHeights(sheet, data, startRowNum);
             }
 
             try (FileOutputStream fos = new FileOutputStream(outputPath)) {
@@ -387,6 +397,39 @@ public class ExcelWriteTool implements BiFunction<ExcelWriteTool.WriteRequest, T
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    /**
+     * 自适应行高度
+     */
+    private void autoFitRowHeights(Sheet sheet, List<List<Object>> data, int startRowNum) {
+        if (data == null) return;
+        
+        for (int i = 0; i < data.size(); i++) {
+            Row row = sheet.getRow(startRowNum + i);
+            if (row != null) {
+                // 计算这一行的最大内容高度
+                float maxHeight = 0;
+                List<Object> rowData = data.get(i);
+                
+                for (int j = 0; j < rowData.size(); j++) {
+                    Object cellValue = rowData.get(j);
+                    if (cellValue != null) {
+                        String strValue = cellValue.toString();
+                        // 简单估算：每行约20个字符换行，每行增加约15像素高度
+                        int lineCount = Math.max(1, (int) Math.ceil(strValue.length() / 20.0));
+                        float estimatedHeight = lineCount * 15.0f;
+                        if (estimatedHeight > maxHeight) {
+                            maxHeight = estimatedHeight;
+                        }
+                    }
+                }
+                
+                // 设置最小高度为默认高度，最大高度不超过200像素
+                maxHeight = Math.max(row.getHeightInPoints(), Math.min(maxHeight, 200.0f));
+                row.setHeightInPoints(maxHeight);
+            }
+        }
     }
 
     /**

@@ -332,6 +332,24 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
             cell.setCellValue(value.toString());
         }
         cell.setCellStyle(style);
+        
+        // 根据内容长度自适应调整行高
+        adjustRowHeight(row, value);
+    }
+
+    /**
+     * 根据内容长度自适应调整行高
+     */
+    private void adjustRowHeight(Row row, Object value) {
+        if (value == null) return;
+        
+        String content = value.toString();
+        if (content.length() > 30) { // 如果内容超过30个字符
+            // 估算所需行高：每行约30个字符，每行增加约5像素
+            int lineCount = Math.max(2, (int) Math.ceil(content.length() / 30.0));
+            float newHeight = Math.min(255, lineCount * 15.0f); // POI最大行高为255
+            row.setHeightInPoints(newHeight);
+        }
     }
 
     /**
@@ -537,8 +555,9 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
 
         for (int i = 0; i < clauses.length; i++) {
             Row row = sheet.createRow(clauseStartRow + i);
-            row.setHeightInPoints(19);
             Cell cell = createCell(row, 0, clauses[i], clauseStyle);
+            // 根据内容长度自适应调整行高
+            adjustRowHeight(row, clauses[i]);
             sheet.addMergedRegion(new CellRangeAddress(clauseStartRow + i, clauseStartRow + i, 0, 7));
         }
     }
@@ -643,6 +662,10 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
             cell.setCellValue(value.toString());
         }
         cell.setCellStyle(style);
+        
+        // 根据内容长度自适应调整行高
+        adjustRowHeight(row, value);
+        
         return cell;
     }
 

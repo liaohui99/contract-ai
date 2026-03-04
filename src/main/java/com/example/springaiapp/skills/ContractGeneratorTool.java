@@ -292,13 +292,14 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         }
 
         String[] clauses = {
-            "二、交货时间： " + deliveryDateStr,
-            "三、交货地点 ： " + (request.getDeliveryAddress() != null ? request.getDeliveryAddress() : "") + 
-                (request.getDeliveryContact() != null ? "  " + request.getDeliveryContact() : ""),
-            "四、技术标准、质量要求：",
-            "五、运费方式及费用承担：乙方负责",
-            "六、结算及支付方式：先付款后发货（乙方提供1%增值税普票）",
-            "七、违约责任：乙方必须按合同要求时间交货，如未按期交货，予以赔偿延期所致甲方的损失",
+            request.getDeliveryTimeClause() != null ? request.getDeliveryTimeClause() : "二、交货时间： " + deliveryDateStr,
+            request.getDeliveryLocationClause() != null ? request.getDeliveryLocationClause() : 
+                ("三、交货地点 ： " + (request.getDeliveryAddress() != null ? request.getDeliveryAddress() : "") + 
+                    (request.getDeliveryContact() != null ? "  " + request.getDeliveryContact() : "")),
+            "四、技术标准、质量要求：" + (request.getTechnicalStandardClause() != null ? request.getTechnicalStandardClause() : ""),
+            request.getFreightClause() != null ? request.getFreightClause() : "五、运费方式及费用承担：乙方负责",
+            request.getPaymentClause() != null ? request.getPaymentClause() : "六、结算及支付方式：先付款后发货（乙方提供1%增值税普票）",
+            request.getBreachClause() != null ? request.getBreachClause() : "七、违约责任：乙方必须按合同要求时间交货，如未按期交货，予以赔偿延期所致甲方的损失",
             "八、本合同未尽事宜由双方协商解决，必要时以合同附件形式另行签订。",
             "九、在本合同履行过程中，如果发生争议由双方协商解决，协商不成，则双方均可向甲方所在地人民法院提起诉讼。",
             "十、本合同一式贰份，双方各执一份。双方签字盖章后，合同生效。"
@@ -521,13 +522,14 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
             }
         }
         String[] clauses = {
-            "二、交货时间： " + deliveryDateStr,
-            "三、交货地点 ： " + (request.getDeliveryAddress() != null ? request.getDeliveryAddress() : "") + 
-                (request.getDeliveryContact() != null ? "  " + request.getDeliveryContact() : ""),
-            "四、技术标准、质量要求：",
-            "五、运费方式及费用承担：乙方负责",
-            "六、结算及支付方式：先付款后发货（乙方提供1%增值税普票）",
-            "七、违约责任：乙方必须按合同要求时间交货，如未按期交货，予以赔偿延期所致甲方的损失",
+            request.getDeliveryTimeClause() != null ? request.getDeliveryTimeClause() : "二、交货时间： " + deliveryDateStr,
+            request.getDeliveryLocationClause() != null ? request.getDeliveryLocationClause() : 
+                ("三、交货地点 ： " + (request.getDeliveryAddress() != null ? request.getDeliveryAddress() : "") + 
+                    (request.getDeliveryContact() != null ? "  " + request.getDeliveryContact() : "")),
+            "四、技术标准、质量要求：" + (request.getTechnicalStandardClause() != null ? request.getTechnicalStandardClause() : ""),
+            request.getFreightClause() != null ? request.getFreightClause() : "五、运费方式及费用承担：乙方负责",
+            request.getPaymentClause() != null ? request.getPaymentClause() : "六、结算及支付方式：先付款后发货（乙方提供1%增值税普票）",
+            request.getBreachClause() != null ? request.getBreachClause() : "七、违约责任：乙方必须按合同要求时间交货，如未按期交货，予以赔偿延期所致甲方的损失",
             "八、本合同未尽事宜由双方协商解决，必要时以合同附件形式另行签订。",
             "九、在本合同履行过程中，如果发生争议由双方协商解决，协商不成，则双方均可向甲方所在地人民法院提起诉讼。",
             "十、本合同一式贰份，双方各执一份。双方签字盖章后，合同生效。"
@@ -799,8 +801,13 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
                         "参数包括: outputPath输出路径(必填), contractNumber合同编号(必填), " +
                         "partyA甲方信息(必填), partyB乙方信息(必填), products商品明细(必填), " +
                         "editMode编辑模式(可选,默认false), signLocation签订地点, signDate签订时间, " +
-                        "deliveryDate交货时间, deliveryDays货运天数, deliveryAddress交货地点, deliveryContact交货联系人。" +
-                        "【推荐】编辑已存在的合同时，设置editMode=true以保留原有内容。")
+                        "deliveryDate交货时间, deliveryDays货运天数, deliveryAddress交货地点, deliveryContact交货联系人, " +
+                        "technicalStandardClause技术标准质量要求具体条款内容(可选，前置\"四、技术标准、质量要求：\"固定不变), " +
+                        "deliveryTimeClause交货时间条款(可选), " +
+                        "deliveryLocationClause交货地点条款(可选), freightClause运费承担条款(可选), " +
+                        "paymentClause结算支付方式条款(可选), breachClause违约责任条款(可选)。" +
+                        "【推荐】编辑已存在的合同时，设置editMode=true以保留原有内容。" +
+                        "【高级】可通过自定义条款参数替换合同中的标准条款内容。")
                 .inputType(ContractRequest.class)
                 .build();
     }
@@ -837,6 +844,30 @@ public class ContractGeneratorTool implements BiFunction<ContractGeneratorTool.C
         @JsonProperty
         @JsonPropertyDescription("签订地点，默认: 湖南醴陵")
         private String signLocation;
+
+        @JsonProperty
+        @JsonPropertyDescription("技术标准、质量要求条款内容，如未提供则使用默认条款")
+        private String technicalStandardClause;
+
+        @JsonProperty
+        @JsonPropertyDescription("交货时间条款内容，如未提供则使用默认条款")
+        private String deliveryTimeClause;
+
+        @JsonProperty
+        @JsonPropertyDescription("交货地点条款内容，如未提供则使用默认条款")
+        private String deliveryLocationClause;
+
+        @JsonProperty
+        @JsonPropertyDescription("运费承担条款内容，如未提供则使用默认条款")
+        private String freightClause;
+
+        @JsonProperty
+        @JsonPropertyDescription("结算支付方式条款内容，如未提供则使用默认条款")
+        private String paymentClause;
+
+        @JsonProperty
+        @JsonPropertyDescription("违约责任条款内容，如未提供则使用默认条款")
+        private String breachClause;
 
         @JsonProperty
         @JsonPropertyDescription("签订时间")

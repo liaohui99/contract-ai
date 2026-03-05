@@ -35,8 +35,28 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jackson.version>2.16.1</jackson.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>1.1.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- 导入 Jackson BOM，强制版本 2.16.1 -->
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -76,11 +96,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.30</version>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.16.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.cloud.ai</groupId>
@@ -124,6 +139,21 @@
 			<artifactId>spring-ai-tika-document-reader</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+<!--		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-mcp-server-webmvc-spring-boot-starter</artifactId>
+			<version>1.0.0-M6</version>
+		</dependency>-->
+<!--		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-mcp</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-mcp-client</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>

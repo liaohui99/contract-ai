@@ -28,8 +28,8 @@ import java.util.List;
 public class ChatTestController {
 
     private final AliBaiLianService aliBaiLianService;
-    private final ReactAgent reactAgent;
-    private final ReactAgent toolsReactAgent;
+    private final ReactAgent faruiReactAgent;
+    private final ReactAgent contractReactAgent;
     private final ChatModel chatModel;
     private final List<ToolCallback> toolCallbacks;
 
@@ -47,13 +47,13 @@ public class ChatTestController {
 
     @GetMapping("/chat/react")
     public String chatReactAgent(@RequestParam String message) throws GraphRunnerException {
-        AssistantMessage call = reactAgent.call(message);
+        AssistantMessage call = faruiReactAgent.call(message);
         return JSON.toJSONString(call);
     }
 
     @GetMapping("/chat/react/tools")
     public String chatToolsReactAgent(@RequestParam String message) throws GraphRunnerException {
-        AssistantMessage call = toolsReactAgent.call(message);
+        AssistantMessage call = contractReactAgent.call(message);
         return JSON.toJSONString(call);
     }
 

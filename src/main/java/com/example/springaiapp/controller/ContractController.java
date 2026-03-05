@@ -1,7 +1,5 @@
 package com.example.springaiapp.controller;
 
-import com.alibaba.cloud.ai.advisor.DashScopeDocumentAnalysisAdvisor;
-import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.alibaba.cloud.ai.graph.NodeOutput;
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.RunnableConfig;
@@ -11,55 +9,69 @@ import com.alibaba.cloud.ai.graph.streaming.StreamingOutput;
 import com.alibaba.fastjson.JSON;
 import com.example.springaiapp.config.ApplicationConfig;
 import com.example.springaiapp.req.MessageReq;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.content.Media;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.model.ApiKey;
-import org.springframework.ai.model.SimpleApiKey;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/ai")
+@RequiredArgsConstructor
 public class ContractController {
 
-    @Autowired
-    private ReactAgent contractReactAgent;
-    @Autowired
-    private ChatClient chatClientWithMcpTools;
+    private final ReactAgent contractReactAgent;
+    private final ReactAgent faruiReactAgent;
+    private final ApplicationConfig applicationConfig;
 
-    @Autowired
-    ChatClient.Builder chatClientBuilder;
-    @Autowired
-    ApplicationConfig applicationConfig;
+
+    @PostMapping(value = "/farui/chat")
+    public Flux<ServerSentEvent<String>> faruiChat(@ModelAttribute @Validated MessageReq req) throws GraphRunnerException {
+        RunnableConfig config = RunnableConfig.builder()
+                .threadId(req.getSessionId())
+                .build();
+        return faruiReactAgent.streamMessages(req.getQuestion(), config)
+                .publishOn(Schedulers.boundedElastic())
+                .concatMap(messageRsp -> {
+                    // 检查消息类型
+                    if (messageRsp.getMessageType() == MessageType.ASSISTANT) {
+                        String text = messageRsp.getText();
+                        if (text != null && !text.isEmpty()) {
+                            System.out.print(text); // 实时打印助手消息内容
+                            return Flux.just(ServerSentEvent.<String>builder()
+                                    .event("data")
+                                    .data(formatSseData("continue", text))
+                                    .build());
+                        }
+                    }
+                    // 返回空的事件以继续流
+                    return Flux.empty();
+                })
+                .doOnComplete(() -> System.out.println("\n流式输出完成"))
+                .doOnError(error -> System.err.println("\n流式输出错误: " + error.getMessage()));
+    }
 
 
     @PostMapping(value = "/simple/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

@@ -17,16 +17,33 @@ spring:
             python:
                 tool:
                     enabled: false
-    mcp:
-        client:
-            enabled: true
-            name: taorunhui-mcp-client
-            version: 1.0.0
-            request-timeout: 30s
-            type: SYNC
-            stdio:
-                servers-configuration: classpath:mcp-servers.json
-                root-change-notification: true
+        mcp:
+            client:
+                toolcallback:
+                    enabled: true
+                enabled: true
+                name: taorunhui-mcp-client
+                version: 1.0.0
+                request-timeout: 30s
+                type: SYNC
+                sse:
+                    connections:
+                        pkulaw-mcp-law-search: # 连接名称，可以自定义
+                            url: https://mcp.api-inference.modelscope.net
+                            sseEndpoint: /d417183559de44/sse
+                        output_with_docxpdf: # 连接名称，可以自定义
+                            url: https://mcp.api-inference.modelscope.net
+                            sseEndpoint: /15bdcc92006441/sse
+                        Docx_MCP:
+                            url: https://mcp.api-inference.modelscope.net
+                            sseEndpoint: /17360824e6b74a/sse
+                        bing-cn-mcp-server:
+                            url: https://mcp.api-inference.modelscope.net
+                            sseEndpoint: /a97a50c48f8a49/sse
+                stdio:
+                    servers-configuration: classpath:mcp-servers.json
+    #                stdio:
+    #                    servers-configuration: classpath:mcp-servers.json
     skills:
         # path: E:/study/AI/taorunhui-ai/src/main/resources/skills
         path: skills
@@ -53,4 +70,4 @@ logging:
             alibaba:
                 cloud:
                     ai:
-                        agent : DEBUG
+                        agent: DEBUG
